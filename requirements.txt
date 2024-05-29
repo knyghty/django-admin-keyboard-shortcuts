@@ -1,5 +1,5 @@
 # Development requirements.
-coverage
+coverage[toml]
 django
 pre-commit
 wheel
