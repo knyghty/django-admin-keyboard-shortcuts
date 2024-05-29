@@ -1,0 +1,5 @@
+# Development requirements.
+coverage
+django
+pre-commit
+wheel

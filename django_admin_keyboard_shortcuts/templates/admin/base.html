@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static "admin/css/shortcuts.css" %}">
+  <script src="{% static "admin/js/shortcuts.js" %}" async></script>
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+  <button id="open-shortcuts">
+    <kbd>?</kbd>
+  </button>
+  <dialog id="shortcuts-dialog">
+    <div class="dialog-heading">
+      <h2>Keyboard shortcuts</h2>
+      <form method="dialog">
+        <button aria-label="Close">✖️</button>
+      </form>
+    </div>
+    <section>
+      <h3>Global</h3>
+      <ul>
+        <li>
+          <div class="shortcut-description">Show this dialog</div>
+          <div class="shortcut-keys"><kbd>?</kbd></div>
+        </li>
+        <li>
+          <div class="shortcut-description">Go to the next page</div>
+          <div class="shortcut-keys"><kbd>→</kbd></div>
+        </li>
+      </ul>
+    </section>
+    {% block shortcuts %}{% endblock %}
+    </dialog>
+{% endblock %}

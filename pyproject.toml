@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+authors = [
+    { "name" = "Tom Carrick", "email" = "tom@carrick.eu" },
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["django"]
+description = "A Django package that adds keyboard shortcuts to the admin"
+license = { "file" = "LICENSE" }
+name = "django-admin-keyboard-shortcuts"
+readme = "README.rst"
+version = "0.1.0"
+
+[project.urls]
+Homepage = "https://github.com/knyghty/django-admin-keyboard-shortcuts"
+Repository = "https://github.com/knyghty/django-admin-keyboard-shortcuts"
+
+[tool.coverage.run]
+branch = true
+source = ["."]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/tests", "requirements.txt", "runtests.py"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["django_admin_keyboard_shortcuts"]
+
+[tool.ruff]
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["DJ", "E", "F", "I", "UP", "W"]
+
+[tool.ruff.lint.isort]
+force-single-line = true
