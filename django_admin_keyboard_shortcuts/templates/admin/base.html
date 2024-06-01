@@ -3,8 +3,10 @@
 
 {% block extrahead %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static "admin/css/shortcuts.css" %}">
-  <script src="{% static "admin/js/shortcuts.js" %}" async></script>
+  {% block extrahead_shortcuts %}
+    <link rel="stylesheet" href="{% static "admin/css/shortcuts.css" %}">
+    <script src="{% static "admin/js/shortcuts.js" %}" async></script>
+  {% endblock %}
 {% endblock %}
 
 {% block footer %}
