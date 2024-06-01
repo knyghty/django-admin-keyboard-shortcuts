@@ -9,6 +9,7 @@
 
 {% block footer %}
   {{ block.super }}
+  {% block shortcuts %}
   <button id="open-shortcuts">
     <kbd>?</kbd>
   </button>
@@ -26,12 +27,9 @@
           <div class="shortcut-description">Show this dialog</div>
           <div class="shortcut-keys"><kbd>?</kbd></div>
         </li>
-        <li>
-          <div class="shortcut-description">Go to the next page</div>
-          <div class="shortcut-keys"><kbd>→</kbd></div>
-        </li>
       </ul>
     </section>
-    {% block shortcuts %}{% endblock %}
+    {% endblock shortcuts %}
+    {% block extra_shortcuts %}{% endblock %}
   </dialog>
 {% endblock %}

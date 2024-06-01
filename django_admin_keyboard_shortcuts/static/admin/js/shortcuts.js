@@ -19,4 +19,4 @@ if (document.readyState === "loading") {
 } else {
   showDialogOnClick();
 }
-document.addEventListener("keyup", handleKeyUp, false);
+document.addEventListener("keyup", handleKeyUp);
