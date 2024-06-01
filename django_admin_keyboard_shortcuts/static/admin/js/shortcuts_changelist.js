@@ -1,13 +1,11 @@
-var checkboxes = null;
-var currentCheckbox = null;
+let checkboxes = null;
+let currentCheckbox = null;
 
 function setUpShortcuts() {
   checkboxes = document.querySelectorAll("#action-toggle, .action-select");
-  console.log(checkboxes);
 }
 
 function focusPreviousCheckbox() {
-  console.log(checkboxes);
   if (!currentCheckbox) {
     currentCheckbox = checkboxes.length - 1;
   } else {
@@ -31,20 +29,27 @@ function selectCheckbox() {
   }
 }
 
+function selectActionsSelect() {
+  const actionsSelect = document.querySelector("select[name=action]")
+  actionsSelect.focus();
+}
+
 function handleKeyUp(event) {
-  switch (event.key) {
-    case "j":
+  switch (event.code) {
+    case "KeyJ":
       focusPreviousCheckbox();
       break;
-    case "k":
+    case "KeyK":
       focusNextCheckbox();
       break;
-    case "x":
+    case "KeyX":
       selectCheckbox();
+      break;
+      case "KeyA":
+        selectActionsSelect();
       break;
   }
 }
-
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", setUpShortcuts);
