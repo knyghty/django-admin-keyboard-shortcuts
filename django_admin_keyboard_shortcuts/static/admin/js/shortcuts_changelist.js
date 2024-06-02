@@ -6,6 +6,9 @@ function setUpShortcuts() {
 }
 
 function focusPreviousCheckbox() {
+  if (!checkboxes.length) {
+    return;
+  }
   if (!currentCheckbox) {
     currentCheckbox = checkboxes.length - 1;
   } else {
@@ -15,6 +18,9 @@ function focusPreviousCheckbox() {
 }
 
 function focusNextCheckbox() {
+  if (!checkboxes.length) {
+    return;
+  }
   if (!currentCheckbox) {
     currentCheckbox = checkboxes[0];
   } else {
