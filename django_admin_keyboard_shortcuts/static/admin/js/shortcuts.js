@@ -17,25 +17,29 @@ function storeKeyCombo(key) {
   setTimeout(function() { removePressedKey(key); }, 5000);
 }
 
-function showDialog() {
-  dialog = document.getElementById("shortcuts-dialog");
+function showDialog(id) {
+  dialog = document.getElementById(id);
   dialog.showModal();
+}
+
+function showShortcutsDialog() {
+  showDialog("shortcuts-dialog");
 }
 
 function showDialogOnClick() {
   dialogButton = document.getElementById("open-shortcuts");
-  dialogButton.addEventListener("click", showDialog);
+  dialogButton.addEventListener("click", showShortcutsDialog);
 }
 
 function handleKeyUp(event) {
   if (event.key === "?") {
-    showDialog();
+    showDialog("shortcuts-dialog");
   } else if (event.key === "g") {
-    console.log(event.key)
     storeKeyCombo("g");
   } else if (event.key === "i" && pressedKeys.has("g")) {
-    console.log(event.key);
     document.location.href = "/admin/";
+  } else if (event.key === "l" && pressedKeys.has("g")) {
+    showDialog("model-list-dialog");
   }
 }
 

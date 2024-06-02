@@ -13,7 +13,7 @@ kbd {
   white-space: nowrap;
 }
 
-#shortcuts-dialog {
+dialog {
   min-width: 20em;
   padding: 0;
 

@@ -1,5 +1,6 @@
 {% extends "admin/base.html" %}
 {% load static %}
+{% load shortcuts %}
 
 {% block extrahead %}
   {{ block.super }}
@@ -15,6 +16,27 @@
   <button id="open-shortcuts">
     <kbd>?</kbd>
   </button>
+  <dialog id="model-list-dialog">
+    <div class="dialog-heading">
+      <h2>Models</h2>
+      <form method="dialog">
+        <button aria-label="Close">✖️</button>
+      </form>
+    </div>
+    <section>
+      <h3>Models</h3>
+      <ul>
+        {% all_models as models %}
+        {% for model in models %}
+          <li>
+            <a href="{{ model.url }}"{{ model.name }}>
+              {{ model.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </dialog>
   <dialog id="shortcuts-dialog">
     <div class="dialog-heading">
       <h2>Keyboard shortcuts</h2>
