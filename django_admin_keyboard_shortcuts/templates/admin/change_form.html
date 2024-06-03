@@ -1,0 +1,32 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrahead_shortcuts %}
+  {{ block.super }}
+  <script src="{% static "admin/js/shortcuts_changeform.js" %}" async></script>
+{% endblock extrahead_shortcuts %}
+
+{% block extra_shortcuts %}
+  {{ block.super }}
+  <section>
+    <h3>Change Form</h3>
+    <ul>
+      <li>
+        <div class="shortcut-description">Save and go to change list</div>
+        <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>s</kbd></div>
+      </li>
+      <li>
+        <div class="shortcut-description">Save and add another</div>
+        <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>a</kbd></div>
+      </li>
+      <li>
+        <div class="shortcut-description">Save and continue editing</div>
+        <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>c</kbd></div>
+      </li>
+      <li>
+        <div class="shortcut-description">Delete</div>
+        <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>d</kbd></div>
+      </li>
+    </ul>
+  </section>
+{% endblock extra_shortcuts %}
