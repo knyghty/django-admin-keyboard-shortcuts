@@ -4,8 +4,11 @@ Django Admin Keyboard Shortcuts
 
 This is a proof of concept for adding keyboard shortcuts to the Django Admin.
 
-I would strongly recommend against using this package as it's quite hacky and
-really just a proof of concept of the types of shortcuts we could have in core.
+There is no PyPI package and I strongly recommend against using this package
+as it's very hacky and really just a proof of concept of the types of shortcuts
+we could have in the core admin. Most of the work needs to happen in core because
+we'd likely need to add new blocks to the admin template, and would ideally need
+changes to the templates.
 
 Credits
 -------
