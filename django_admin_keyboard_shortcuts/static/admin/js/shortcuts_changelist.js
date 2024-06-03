@@ -42,10 +42,10 @@ function selectActionsSelect() {
 
 function handleKeyUp(event) {
   switch (event.code) {
-    case "KeyJ":
+    case "KeyK":
       focusPreviousCheckbox();
       break;
-    case "KeyK":
+    case "KeyJ":
       focusNextCheckbox();
       break;
     case "KeyX":
