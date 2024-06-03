@@ -9,7 +9,7 @@
 {% block extra_shortcuts %}
   {{ block.super }}
   <section>
-    <h3>Change Form</h3>
+    <h3>{% if change %}Change{% else %}Add{% endif %} Form</h3>
     <ul>
       <li>
         <div class="shortcut-description">Save and go to change list</div>
@@ -23,10 +23,12 @@
         <div class="shortcut-description">Save and continue editing</div>
         <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>c</kbd></div>
       </li>
-      <li>
-        <div class="shortcut-description">Delete</div>
-        <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>d</kbd></div>
-      </li>
+      {% if change %}
+        <li>
+          <div class="shortcut-description">Delete</div>
+          <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>d</kbd></div>
+        </li>
+      {% endif %}
     </ul>
   </section>
 {% endblock extra_shortcuts %}
