@@ -1,7 +1,5 @@
 {% extends "admin/base.html" %}
-{% load static %}
-{% load i18n %}
-{% load shortcuts %}
+{% load static i18n shortcuts %}
 
 {% block extrahead %}
   {{ block.super }}
@@ -19,9 +17,9 @@
   </button>
   <dialog id="model-list-dialog">
     <div class="dialog-heading">
-      <h2>Models</h2>
+      <h2>{% translate "Models" %}</h2>
       <form method="dialog">
-        <button aria-label="Close">✖️</button>
+        <button aria-label="{% translate 'Close' %}">&#10006;</button>
       </form>
     </div>
     <input type="search" id="model-list-dialog-search"
@@ -43,24 +41,24 @@
   </dialog>
   <dialog id="shortcuts-dialog">
     <div class="dialog-heading">
-      <h2>Keyboard shortcuts</h2>
+      <h2>{% translate "Keyboard shortcuts" %}</h2>
       <form method="dialog">
-        <button aria-label="Close">✖️</button>
+        <button aria-label="{% translate 'Close' %}">&#10006;</button>
       </form>
     </div>
     <section>
-      <h3>Global</h3>
+      <h3>{% translate "Global" %}</h3>
       <ul>
         <li>
-          <div class="shortcut-description">Show this dialog</div>
+          <div class="shortcut-description">{% translate "Show this dialog" %}</div>
           <div class="shortcut-keys"><kbd>?</kbd></div>
         </li>
         <li>
-          <div class="shortcut-description">Go to the site index</div>
+          <div class="shortcut-description">{% translate "Go to the site index" %}</div>
           <div class="shortcut-keys"><kbd>g</kbd> <kbd>i</kdb></div>
         </li>
         <li>
-          <div class="shortcut-description">Go to a change list page</div>
+          <div class="shortcut-description">{% translate "Go to a change list page" %}</div>
           <div class="shortcut-keys"><kbd>g</kbd> <kbd>l</kdb></div>
         </li>
       </ul>
