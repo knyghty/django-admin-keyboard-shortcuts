@@ -22,22 +22,33 @@
         <button aria-label="{% translate 'Close' %}">&#10006;</button>
       </form>
     </div>
-    <input type="search" id="model-list-dialog-search"
-      placeholder="{% translate 'Start typing to search' %}"
-      aria-label="{% translate 'Search models' %}"
-  >
-    <section>
-      <ul>
-        {% all_models as models %}
-        {% for model in models %}
-          <li>
-            <a href="{{ model.url }}"{{ model.name }}>
-              {{ model.name }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
+    <form id="model-list-dialog-form">
+      <label for="model-list-dialog-search">
+        {% translate 'Search model' %}
+      </label>
+      <input
+        type="search"
+        id="model-list-dialog-search"
+        placeholder="{% translate 'Start typing to search...' %}"
+      >
+    </form>
+    <div>
+      {% all_apps as apps %}
+      {% for app_label, models in apps.items %}
+        <section>
+          <h3>{{ app_label }}</h3>
+          <ul>
+          {% for model in models %}
+            <li>
+              <a href="{{ model.url }}"{{ model.name }}>
+                {{ model.name }}
+              </a>
+            </li>
+          {% endfor %}
+          </ul>
+        </section>
+      {% endfor %}
+    </div>
   </dialog>
   <dialog id="shortcuts-dialog">
     <div class="dialog-heading">

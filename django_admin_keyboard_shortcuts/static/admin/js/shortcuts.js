@@ -66,15 +66,25 @@ function replaceModifiers() {
 // defined in django/contrib/admin/static/admin/js/nav_sidebar.js
 // If/when merged into core, we could try to reuse some parts
 function filterModelList() {
-  const options = [];
   const modelListDialog = document.getElementById('model-list-dialog');
   if (!modelListDialog) {
       return;
   }
-  modelListDialog.querySelectorAll('li a').forEach((container) => {
-      options.push({title: container.innerHTML, node: container});
-  });
 
+  const appSections = [];
+  
+  modelListDialog.querySelectorAll('section').forEach(section => {
+    const options = [];
+    section.querySelectorAll('li a').forEach(container => options.push({
+      title: container.innerHTML,
+      node: container
+    }));
+    
+    appSections.push({
+      node: section, 
+      options,
+    });
+  });
 
   function checkValue(event) {
       let filterValue = event.target.value;
@@ -85,14 +95,30 @@ function filterModelList() {
           filterValue = '';
           event.target.value = ''; // clear input
       }
-      for (const option of options) {
-          let displayValue = '';
-          if (!filterValue || option.title.toLowerCase().indexOf(filterValue) === -1) {
-            displayValue = 'none'
-          }
-          option.node.parentNode.style.display = displayValue;
-      }
 
+      appSections.forEach(section => {
+        let matched = false;
+        // Check if any of the app models match the filter text
+        section.options.forEach((option) => {
+          let optionDisplay = '';
+          if (option.title.toLowerCase().indexOf(filterValue) === -1) {
+            optionDisplay = 'none';
+          } else {
+            matched = true;
+          }
+          // Set display in parent <li> element
+          option.node.parentNode.style.display = optionDisplay;
+        });
+
+        let sectionDisplay = '';
+        // If there's no filter value or no matched models
+        // for the section, we hide the section entirely
+        if (!filterValue || !matched) {
+          sectionDisplay = 'none';
+        }
+        // Set display for the app section
+        section.node.style.display = sectionDisplay;
+      });
   }
 
   const nav = document.getElementById('model-list-dialog-search');
