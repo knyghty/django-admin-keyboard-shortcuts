@@ -18,9 +18,10 @@ https://github.com/knyghty/django-admin-demo
 
 Then clone this repo somewhere and install it in editable mode with pip, e.g.
 
-```
-pip install -e ../django-admin-keyboard-shortcuts
-```
+.. code-block:: console
+    
+    pip install -e ../django-admin-keyboard-shortcuts
+
 
 Then add `django_admin_keyboard_shortcuts` to your `INSTALLED_APPS`. It must go
 above the `django.contrib.admin` app so that the template overrides work.
