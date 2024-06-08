@@ -1,4 +1,17 @@
 let previousKey = undefined;
+const shortcutFunctions = new Map([
+  ["g i", () => { document.location.href = "/admin/"; }],
+  ["g l", () => showDialog("model-list-dialog")]
+]);
+
+function registerDeclarativeShortcuts() {
+  const elements = document.querySelectorAll('[data-keyboard-shortcut]');
+  for (const element of elements) {
+    shortcutFunctions.set(element.getAttribute('data-keyboard-shortcut'), () => {
+      element.click();
+    });
+  }
+}
 
 function isApple() {
   return (
@@ -33,14 +46,11 @@ function showDialogOnClick() {
 }
 
 function handleKeyUp(event) {
-  if (event.key === "?") {
-    showDialog("shortcuts-dialog");
-  } else if (event.key === "g") {
-    storePreviousKey("g");
-  } else if (event.key === "i" && previousKey === "g") {
-    document.location.href = "/admin/";
-  } else if (event.key === "l" && previousKey === "g") {
-    showDialog("model-list-dialog");
+  const shortcut = previousKey ? `${previousKey} ${event.key}` : event.key;
+  if (shortcutFunctions.has(shortcut)) {
+    shortcutFunctions.get(shortcut)();
+  } else {
+    storePreviousKey(event.key);
   }
 }
 
@@ -99,9 +109,11 @@ if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", showDialogOnClick);
   document.addEventListener("DOMContentLoaded", replaceModifiers);
   document.addEventListener("DOMContentLoaded", filterModelList);
+  document.addEventListener("DOMContentLoaded", registerDeclarativeShortcuts);
 } else {
   showDialogOnClick();
   replaceModifiers();
   filterModelList();
+  registerDeclarativeShortcuts();
 }
 document.addEventListener("keyup", handleKeyUp);
