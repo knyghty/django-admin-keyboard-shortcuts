@@ -1,5 +1,5 @@
 {% extends "admin/delete_confirmation.html" %}
-{% load static %}
+{% load static i18n %}
 
 {% block extrahead_shortcuts %}
   {{ block.super }}
@@ -9,14 +9,14 @@
 {% block extra_shortcuts %}
   {{ block.super }}
   <section>
-    <h3>Delete Confirmation</h3>
+    <h3>{% translate "Delete Confirmation" %}</h3>
     <ul>
       <li>
-        <div class="shortcut-description">Confirm deletion</div>
+        <div class="shortcut-description">{% translate "Confirm deletion" %}</div>
         <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>y</kbd></div>
       </li>
       <li>
-        <div class="shortcut-description">Cancel deletion</div>
+        <div class="shortcut-description">{% translate "Cancel deletion" %}</div>
         <div class="shortcut-keys"><kbd class="alt">Alt</kbd> + <kbd>n</kbd></div>
       </li>
     </ul>
