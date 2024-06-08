@@ -1,4 +1,4 @@
-let pressedKeys = new Set();
+let previousKey = undefined;
 
 function isApple() {
   return (
@@ -7,13 +7,15 @@ function isApple() {
   )
 }
 
-function removePressedKey(key) {
-  pressedKeys.delete(key);
+function removePreviousKey(key) {
+  if (previousKey === key) {
+    previousKey = undefined;
+  }
 }
 
-function storeKeyCombo(key) {
-  pressedKeys.add(key);
-  setTimeout(function() { removePressedKey(key); }, 5000);
+function storePreviousKey(key) {
+  previousKey = key;
+  setTimeout(function() { removePreviousKey(key); }, 5000);
 }
 
 function showDialog(id) {
@@ -34,10 +36,10 @@ function handleKeyUp(event) {
   if (event.key === "?") {
     showDialog("shortcuts-dialog");
   } else if (event.key === "g") {
-    storeKeyCombo("g");
-  } else if (event.key === "i" && pressedKeys.has("g")) {
+    storePreviousKey("g");
+  } else if (event.key === "i" && previousKey === "g") {
     document.location.href = "/admin/";
-  } else if (event.key === "l" && pressedKeys.has("g")) {
+  } else if (event.key === "l" && previousKey === "g") {
     showDialog("model-list-dialog");
   }
 }
