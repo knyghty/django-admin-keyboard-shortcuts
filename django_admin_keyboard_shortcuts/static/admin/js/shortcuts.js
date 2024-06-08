@@ -5,6 +5,7 @@
         ["g i", () => { document.location.href = "/admin/"; }],
         ["g l", () => showDialog("model-list-dialog")]
     ]);
+    const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
     
     function registerDeclarativeShortcuts() {
         const elements = document.querySelectorAll('[data-keyboard-shortcut]');
@@ -20,8 +21,9 @@
     }
 
     function is_focused_text_field() {
-      let active = document.activeElement;
-      return (active.nodeName == 'INPUT' && active.type == 'text') || active.nodeName == 'TEXTAREA'
+      let tag = document.activeElement.nodeName,
+          type = document.activeElement.nodeName;
+      return tag === 'TEXTAREA' || (tag === 'INPUT' && (!type || inputTextFieldTypes.includes(type)));
     }
 
     function removePreviousKey(key) {
