@@ -5,7 +5,7 @@
         ["g i", () => { document.location.href = "/admin/"; }],
         ["g l", () => showDialog("model-list-dialog")]
     ]);
-
+    
     function registerDeclarativeShortcuts() {
         const elements = document.querySelectorAll('[data-keyboard-shortcut]');
         for (const element of elements) {
@@ -17,6 +17,11 @@
 
     function isApple() {
         return (navigator.platform.indexOf("Mac") === 0 || navigator.platform === "iPhone");
+    }
+
+    function is_focused_text_field() {
+      let active = document.activeElement;
+      return (active.nodeName == 'INPUT' && active.type == 'text') || active.nodeName == 'TEXTAREA'
     }
 
     function removePreviousKey(key) {
@@ -47,6 +52,7 @@
     }
 
     function handleKeyUp(event) {
+        if (is_focused_text_field()) return;
         const shortcut = previousKey ? `${previousKey} ${event.key}` : event.key;
         if (shortcutFunctions.has(shortcut)) {
             shortcutFunctions.get(shortcut)();
