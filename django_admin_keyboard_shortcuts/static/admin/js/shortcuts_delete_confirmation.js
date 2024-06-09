@@ -1,42 +1,40 @@
-let confirmButton = null;
-let cancelButton = null;
+'use strict';
+{
+  let confirmButton = null;
+  let cancelButton = null;
 
-function setUpShortcuts() {
-  confirmButton = document.querySelector("#content input[type=submit]");
-  cancelButton = document.querySelector(".cancel-link");
-}
-
-function confirmDeletion() {
-  confirmButton.click();
-}
-
-function cancelDeletion() {
-  cancelButton.click();
-}
-
-function selectActionsSelect() {
-  const actionsSelect = document.querySelector("select[name=action]")
-  actionsSelect.focus();
-}
-
-function handleKeyUp(event) {
-  switch (event.code) {
-    case "KeyY":
-      if (event.altKey) {
-        confirmDeletion();
-      }
-      break;
-    case "KeyN":
-      if (event.altKey) {
-        cancelDeletion();
-      }
-      break;
+  function setUpShortcuts() {
+    confirmButton = document.querySelector("#content input[type=submit]");
+    cancelButton = document.querySelector(".cancel-link");
   }
-}
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setUpShortcuts);
-} else {
-  setUpShortcuts();
+  function confirmDeletion() {
+    confirmButton.click();
+  }
+
+  function cancelDeletion() {
+    cancelButton.click();
+  }
+
+  function handleKeyUp(event) {
+    switch (event.code) {
+      case "KeyY":
+        if (event.altKey) {
+          confirmDeletion();
+        }
+        break;
+      case "KeyN":
+        if (event.altKey) {
+          cancelDeletion();
+        }
+        break;
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setUpShortcuts);
+  } else {
+    setUpShortcuts();
+  }
+  document.addEventListener("keyup", handleKeyUp);
 }
-document.addEventListener("keyup", handleKeyUp);
