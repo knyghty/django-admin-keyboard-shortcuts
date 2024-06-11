@@ -14,6 +14,8 @@ kbd {
 }
 
 dialog {
+  background-color: var(--darkened-bg);
+  color: var(--body-fg);
   min-width: 20em;
   padding: 1em;
   height: 50vh;
