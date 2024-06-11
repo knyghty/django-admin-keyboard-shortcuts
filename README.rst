@@ -28,6 +28,23 @@ above the `django.contrib.admin` app so that the template overrides work.
 
 Now you can hack away.
 
+Linting
+-------
+
+This project uses ESLint as its JS linter and uses the same configuration as the 
+Django repository. To run it, you'll first need to install dependencies
+
+.. code-block:: console
+    
+    npm install
+
+and then run
+
+.. code-block:: console
+    
+    npm run lint
+
+
 Credits
 -------
 
