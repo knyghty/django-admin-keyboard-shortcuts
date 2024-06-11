@@ -13,7 +13,6 @@
     }
 
     function handleKeyUp(event) {
-      if (is_focused_text_field()) return;
         switch (event.code) {
         case "KeyS":
             if (event.altKey) {

@@ -6,7 +6,7 @@
         ["g l", () => showDialog("model-list-dialog")]
     ]);
     const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
-    
+
     function registerDeclarativeShortcuts() {
         const elements = document.querySelectorAll('[data-keyboard-shortcut]');
         for (const element of elements) {
