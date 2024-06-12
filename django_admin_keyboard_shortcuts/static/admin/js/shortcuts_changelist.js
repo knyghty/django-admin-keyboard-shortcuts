@@ -43,7 +43,7 @@
     }
 
     function handleKeyUp(event) {
-        if (is_focused_text_field()) return;
+        if (isFocusedTextField()) return;
         switch (event.code) {
         case "KeyK":
             focusPreviousCheckbox();

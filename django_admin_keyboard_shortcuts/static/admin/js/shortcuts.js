@@ -1,11 +1,19 @@
 'use strict';
+
+const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
+
+function isFocusedTextField() {
+    let tag = document.activeElement.nodeName,
+        type = document.activeElement.type;
+    return tag === 'TEXTAREA' || (tag === 'INPUT' && (!type || inputTextFieldTypes.includes(type)));
+}
+
 {
     let previousKey = undefined;
     const shortcutFunctions = new Map([
         ["g i", () => { document.location.href = "/admin/"; }],
         ["g l", () => showDialog("model-list-dialog")]
     ]);
-    const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
 
     function registerDeclarativeShortcuts() {
         const elements = document.querySelectorAll('[data-keyboard-shortcut]');
@@ -18,12 +26,6 @@
 
     function isApple() {
         return (navigator.platform.indexOf("Mac") === 0 || navigator.platform === "iPhone");
-    }
-
-    function is_focused_text_field() {
-      let tag = document.activeElement.nodeName,
-          type = document.activeElement.nodeName;
-      return tag === 'TEXTAREA' || (tag === 'INPUT' && (!type || inputTextFieldTypes.includes(type)));
     }
 
     function removePreviousKey(key) {
@@ -54,7 +56,7 @@
     }
 
     function handleKeyUp(event) {
-        if (is_focused_text_field()) return;
+        if (isFocusedTextField()) return;
         const shortcut = previousKey ? `${previousKey} ${event.key}` : event.key;
         if (shortcutFunctions.has(shortcut)) {
             shortcutFunctions.get(shortcut)();
