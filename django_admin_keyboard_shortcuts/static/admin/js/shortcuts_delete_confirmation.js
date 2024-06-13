@@ -17,7 +17,7 @@
     }
 
     function handleKeyUp(event) {
-        switch (event.code) {
+      switch (event.code) {
         case "KeyY":
             if (event.altKey) {
                 confirmDeletion();

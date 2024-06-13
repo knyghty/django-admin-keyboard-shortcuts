@@ -1,4 +1,13 @@
 'use strict';
+
+const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
+
+function isFocusedTextField() {
+    let tag = document.activeElement.nodeName,
+        type = document.activeElement.type;
+    return tag === 'TEXTAREA' || (tag === 'INPUT' && (!type || inputTextFieldTypes.includes(type)));
+}
+
 {
     let previousKey = undefined;
     const shortcutFunctions = new Map([
@@ -47,6 +56,7 @@
     }
 
     function handleKeyUp(event) {
+        if (isFocusedTextField()) return;
         const shortcut = previousKey ? `${previousKey} ${event.key}` : event.key;
         if (shortcutFunctions.has(shortcut)) {
             shortcutFunctions.get(shortcut)();
