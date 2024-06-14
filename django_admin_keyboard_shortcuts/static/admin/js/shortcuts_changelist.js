@@ -42,8 +42,8 @@
         actionsSelect.focus();
     }
 
-    function handleKeyUp(event) {
-        if (isFocusedTextField()) return;
+    function handleKeyDown(event) {
+        if (isFocusedTextField()) { return; }
         switch (event.code) {
         case "KeyK":
             focusPreviousCheckbox();
@@ -65,5 +65,5 @@
     } else {
         setUpShortcuts();
     }
-    document.addEventListener("keyup", handleKeyUp);
+    document.addEventListener("keydown", handleKeyDown);
 }
