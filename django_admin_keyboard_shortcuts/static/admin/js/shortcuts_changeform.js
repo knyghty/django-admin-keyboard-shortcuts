@@ -12,7 +12,7 @@
         deleteButton = document.querySelector(".deletelink");
     }
 
-    function handleKeyUp(event) {
+    function handleKeyDown(event) {
         switch (event.code) {
         case "KeyS":
             if (event.altKey) {
@@ -42,5 +42,5 @@
     } else {
         setUpShortcuts();
     }
-    document.addEventListener("keyup", handleKeyUp);
+    document.addEventListener("keydown", handleKeyDown);
 }

@@ -16,8 +16,8 @@
         cancelButton.click();
     }
 
-    function handleKeyUp(event) {
-      switch (event.code) {
+    function handleKeyDown(event) {
+        switch (event.code) {
         case "KeyY":
             if (event.altKey) {
                 confirmDeletion();
@@ -36,5 +36,5 @@
     } else {
         setUpShortcuts();
     }
-    document.addEventListener("keyup", handleKeyUp);
+    document.addEventListener("keydown", handleKeyDown);
 }

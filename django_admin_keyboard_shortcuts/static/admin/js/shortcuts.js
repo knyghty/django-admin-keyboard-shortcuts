@@ -3,8 +3,8 @@
 const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
 
 function isFocusedTextField() {
-    let tag = document.activeElement.nodeName,
-        type = document.activeElement.type;
+    const tag = document.activeElement.nodeName;
+    const type = document.activeElement.type;
     return tag === 'TEXTAREA' || (tag === 'INPUT' && (!type || inputTextFieldTypes.includes(type)));
 }
 
@@ -55,8 +55,8 @@ function isFocusedTextField() {
         dialogButton.addEventListener("click", showShortcutsDialog);
     }
 
-    function handleKeyUp(event) {
-        if (isFocusedTextField()) return;
+    function handleKeyDown(event) {
+        if (isFocusedTextField()) { return; }
         const shortcut = previousKey ? `${previousKey} ${event.key}` : event.key;
         if (shortcutFunctions.has(shortcut)) {
             shortcutFunctions.get(shortcut)();
@@ -133,7 +133,7 @@ function isFocusedTextField() {
         const nav = document.getElementById('model-list-dialog-search');
         nav.addEventListener('change', checkValue, false);
         nav.addEventListener('input', checkValue, false);
-        nav.addEventListener('keyup', checkValue, false);
+        nav.addEventListener('keydown', checkValue, false);
 
         // We don't want to show anything on the list until the user starts typing
         checkValue({target: {value: ''}, key: ''});
@@ -151,5 +151,5 @@ function isFocusedTextField() {
         filterModelList();
         registerDeclarativeShortcuts();
     }
-    document.addEventListener("keyup", handleKeyUp);
+    document.addEventListener("keydown", handleKeyDown);
 }
