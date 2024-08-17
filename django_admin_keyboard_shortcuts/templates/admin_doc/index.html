@@ -1,0 +1,21 @@
+{% extends "admin_doc/index.html" %}
+{% load static i18n %}
+
+{% block extrahead_shortcuts %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static "admin/css/admin-doc.css" %}">
+{% endblock extrahead_shortcuts %}
+
+{% block content %}
+  {{ block.super }}
+
+  <div id="keyboard-shortcuts-docs">
+    <h1>
+      Keyboard shortcuts
+    </h1>
+
+    <p> You can access keyboard shortcuts on any page by pressing the <kbd>?</kbd> key. </p>
+
+  </div>
+
+{% endblock content %}

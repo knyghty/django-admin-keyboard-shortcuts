@@ -1,3 +1,15 @@
+
+html[data-theme="light"],
+:root {
+  /* In light mode, this is the same as --darker-bg */
+  --keyboard-shortcuts-bg: #f8f8f8; 
+} 
+
+html[data-theme="dark"] {
+  /* In dark mode, this is a bit lighter than --darker-bg */
+  --keyboard-shortcuts-bg: #292929;
+}
+
 kbd {
   background-color: var(--body-bg);
   border-radius: 3px;
@@ -14,12 +26,16 @@ kbd {
 }
 
 dialog {
-  background-color: var(--darkened-bg);
+  background-color: var(--keyboard-shortcuts-bg);
   color: var(--body-fg);
   min-width: 20em;
   padding: 1em;
-  height: 50vh;
+  height: 65vh;
   width: 40vw;
+
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 
   .dialog-heading {
     align-items: center;
@@ -28,12 +44,13 @@ dialog {
 
     h2 {
       margin: 0;
+      color: var(--body-fg);
     }
   }
 
   h3 {
     background: var(--header-bg);
-    color: var(--header-color);
+    color: var(--header-link-color);
     margin: 0;
     padding: 0.5em 1em;
   }
@@ -58,8 +75,13 @@ dialog {
       column-gap: 1em;
       display: flex;
       justify-content: space-between;
-      border-top: 1px solid var(--border-color);
+      border-top: 0.5px solid var(--body-quiet-color);
       padding: 1em;
+      font-size: 1em;
+    }
+
+    li:first-child {
+      border-top: none;
     }
   }
 }
