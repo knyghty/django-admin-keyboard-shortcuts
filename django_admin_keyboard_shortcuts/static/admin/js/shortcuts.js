@@ -56,10 +56,10 @@ function isFocusedTextField() {
     }
 
     function handleKeyDown(event) {
-        console.log("keydown")
+        console.log("keydown");
         if (isFocusedTextField()) { return; }
         const shortcut = previousKey ? `${previousKey} ${event.key}` : event.key;
-        console.log(shorcutFunctions);
+        console.log(shortcutFunctions);
         if (shortcutFunctions.has(shortcut)) {
             console.log("has shortcut");
             shortcutFunctions.get(shortcut)();
