@@ -56,16 +56,28 @@ function isFocusedTextField() {
     }
 
     function handleKeyDown(event) {
-        console.log("keydown");
-        if (isFocusedTextField()) { return; }
-        const shortcut = previousKey ? `${previousKey} ${event.key}` : event.key;
-        console.log(shortcutFunctions);
-        if (shortcutFunctions.has(shortcut)) {
-            console.log("has shortcut");
-            shortcutFunctions.get(shortcut)();
-        } else {
-            storePreviousKey(event.key);
+        // If we're in a focused text field, don't apply keyboard shortcuts
+        if (isFocusedTextField()) { 
+            return;
         }
+
+        // If there's a previous key, we first check whether the combination of the
+        // previous key followed by the current key are a shortcut
+        const shortcutWithPreviousKey = previousKey ? `${previousKey} ${event.key}` : null;
+        if (shortcutWithPreviousKey && shortcutFunctions.has(shortcutWithPreviousKey)) {
+            shortcutFunctions.get(shortcutWithPreviousKey)();
+            return;
+        } 
+        
+        // Otherwise, check if the new key has a shortcut, e.g `?`
+        if (shortcutFunctions.has(event.key)) {
+            shortcutFunctions.get(event.key)();
+            return;
+        }
+            
+        // Simply store the key for the next keyDown
+        storePreviousKey(event.key);
+        
     }
 
     function replaceModifiers() {
