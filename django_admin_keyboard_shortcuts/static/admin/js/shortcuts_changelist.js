@@ -1,7 +1,7 @@
 'use strict';
 {
     let checkboxes = null;
-    let currentCheckbox = null;
+    let currentCheckboxIndex = null;
 
     function setUpShortcuts() {
         checkboxes = document.querySelectorAll("#action-toggle, .action-select");
@@ -11,30 +11,28 @@
         if (!checkboxes.length) {
             return;
         }
-        if (!currentCheckbox) {
-            currentCheckbox = checkboxes.length - 1;
+        if (currentCheckboxIndex === null) {
+            currentCheckboxIndex = checkboxes.length - 1;
         } else {
-            currentCheckbox = checkboxes[Array.prototype.indexOf.call(checkboxes, currentCheckbox) - 1];
+            currentCheckboxIndex = (currentCheckboxIndex - 1 + checkboxes.length) % checkboxes.length;
         }
-        currentCheckbox.focus();
+        checkboxes[currentCheckboxIndex].focus();
     }
 
     function focusNextCheckbox() {
         if (!checkboxes.length) {
             return;
         }
-        if (!currentCheckbox) {
-            currentCheckbox = checkboxes[0];
+        if (currentCheckboxIndex === null) {
+            currentCheckboxIndex = 0;
         } else {
-            currentCheckbox = checkboxes[Array.prototype.indexOf.call(checkboxes, currentCheckbox) + 1];
+            currentCheckboxIndex = (currentCheckboxIndex + 1) % checkboxes.length;
         }
-        currentCheckbox.focus();
+        checkboxes[currentCheckboxIndex].focus();
     }
 
     function selectCheckbox() {
-        if (currentCheckbox) {
-            currentCheckbox.click();
-        }
+        checkboxes[currentCheckboxIndex].click();
     }
 
     function selectActionsSelect() {
