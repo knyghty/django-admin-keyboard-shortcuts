@@ -11,10 +11,10 @@
         if (!checkboxes.length) {
             return;
         }
-        if (currentCheckboxIndex === null) {
+        if (currentCheckboxIndex === null || currentCheckboxIndex === 0) {
             currentCheckboxIndex = checkboxes.length - 1;
         } else {
-            currentCheckboxIndex = (currentCheckboxIndex - 1 + checkboxes.length) % checkboxes.length;
+            currentCheckboxIndex = currentCheckboxIndex - 1;
         }
         checkboxes[currentCheckboxIndex].focus();
     }
@@ -23,10 +23,10 @@
         if (!checkboxes.length) {
             return;
         }
-        if (currentCheckboxIndex === null) {
+        if (currentCheckboxIndex === null || currentCheckboxIndex === checkboxes.length - 1) {
             currentCheckboxIndex = 0;
         } else {
-            currentCheckboxIndex = (currentCheckboxIndex + 1) % checkboxes.length;
+            currentCheckboxIndex = currentCheckboxIndex + 1;
         }
         checkboxes[currentCheckboxIndex].focus();
     }
