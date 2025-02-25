@@ -32,7 +32,9 @@
     }
 
     function selectCheckbox() {
-        checkboxes[currentCheckboxIndex].click();
+        if (currentCheckboxIndex !== null) {
+                checkboxes[currentCheckboxIndex].click();
+        }
     }
 
     function selectActionsSelect() {
