@@ -4,17 +4,19 @@
     let currentCheckbox = null;
 
     function setUpShortcuts() {
-        checkboxes = document.querySelectorAll("#action-toggle, .action-select");
+        checkboxes = Array.from(
+            document.querySelectorAll("#action-toggle, .action-select")
+        )
     }
 
     function focusPreviousCheckbox() {
         if (!checkboxes.length) {
             return;
         }
-        if (!currentCheckbox) {
-            currentCheckbox = checkboxes.length - 1;
+        if (!currentCheckbox || currentCheckbox === checkboxes[0]) {
+            currentCheckbox = checkboxes[checkboxes.length - 1];
         } else {
-            currentCheckbox = checkboxes[Array.prototype.indexOf.call(checkboxes, currentCheckbox) - 1];
+            currentCheckbox = checkboxes[checkboxes.indexOf(currentCheckbox) - 1];
         }
         currentCheckbox.focus();
     }
@@ -23,10 +25,10 @@
         if (!checkboxes.length) {
             return;
         }
-        if (!currentCheckbox) {
+        if (!currentCheckbox || currentCheckbox === checkboxes[checkboxes.length - 1]) {
             currentCheckbox = checkboxes[0];
         } else {
-            currentCheckbox = checkboxes[Array.prototype.indexOf.call(checkboxes, currentCheckbox) + 1];
+            currentCheckbox = checkboxes[checkboxes.indexOf(currentCheckbox) + 1];
         }
         currentCheckbox.focus();
     }
