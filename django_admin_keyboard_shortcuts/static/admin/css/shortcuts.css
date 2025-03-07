@@ -20,48 +20,48 @@ dialog {
   padding: 1em;
   height: 50vh;
   width: 40vw;
+}
 
-  .dialog-heading {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
+.dialog-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
 
-    h2 {
-      margin: 0;
-    }
-  }
+.dialog-heading h2 {
+  margin: 0;
+}
 
-  h3 {
-    background: var(--header-bg);
-    color: var(--header-color);
-    margin: 0;
-    padding: 0.5em 1em;
-  }
+dialog h3 {
+  background: var(--header-bg);
+  color: var(--header-color);
+  margin: 0;
+  padding: 0.5em 1em;
+}
 
-  button {
-    background: inherit;
-    cursor: pointer;
-    border: 0;
-    font-size: 1.5em;
-    padding: 0;
-    width: 30px;
-    height: 30px;
-  }
+dialog button {
+  background: inherit;
+  cursor: pointer;
+  border: 0;
+  font-size: 1.5em;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+}
 
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+dialog ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-    li {
-      align-items: center;
-      column-gap: 1em;
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid var(--border-color);
-      padding: 1em;
-    }
-  }
+dialog ul li {
+  align-items: center;
+  column-gap: 1em;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-color);
+  padding: 1em;
 }
 
 #model-list-dialog-search {
