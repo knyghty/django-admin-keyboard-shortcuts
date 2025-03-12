@@ -19,7 +19,7 @@ https://github.com/knyghty/django-admin-demo
 Then clone this repo somewhere and install it in editable mode with pip, e.g.
 
 .. code-block:: console
-    
+
     pip install -e ../django-admin-keyboard-shortcuts
 
 
@@ -31,17 +31,17 @@ Now you can hack away.
 Linting
 -------
 
-This project uses ESLint as its JS linter and uses the same configuration as the 
+This project uses ESLint as its JS linter and uses the same configuration as the
 Django repository. To run it, you'll first need to install dependencies
 
 .. code-block:: console
-    
+
     npm install
 
 and then run
 
 .. code-block:: console
-    
+
     npm run lint
 
 
