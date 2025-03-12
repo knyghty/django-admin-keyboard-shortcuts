@@ -57,7 +57,7 @@ function isFocusedTextField() {
 
     function handleKeyDown(event) {
         // If we're in a focused text field, don't apply keyboard shortcuts
-        if (isFocusedTextField()) { 
+        if (isFocusedTextField()) {
             return;
         }
 
@@ -67,17 +67,17 @@ function isFocusedTextField() {
         if (shortcutWithPreviousKey && shortcutFunctions.has(shortcutWithPreviousKey)) {
             shortcutFunctions.get(shortcutWithPreviousKey)();
             return;
-        } 
-        
+        }
+
         // Otherwise, check if the new key has a shortcut, e.g `?`
         if (shortcutFunctions.has(event.key)) {
             shortcutFunctions.get(event.key)();
             return;
         }
-            
+
         // Simply store the key for the next keyDown
         storePreviousKey(event.key);
-        
+
     }
 
     function replaceModifiers() {
