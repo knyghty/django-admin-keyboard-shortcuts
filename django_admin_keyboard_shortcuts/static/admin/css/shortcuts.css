@@ -13,7 +13,7 @@ kbd {
   white-space: nowrap;
 }
 
-.keyboard-shortcut-dialog {
+.keyboard-shortcuts {
   background-color: var(--darkened-bg);
   color: var(--body-fg);
   min-width: 20em;

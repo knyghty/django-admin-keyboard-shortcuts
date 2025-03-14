@@ -6,7 +6,7 @@
     function setUpShortcuts() {
         checkboxes = Array.from(
             document.querySelectorAll("#action-toggle, .action-select")
-        );
+        )
     }
 
     function focusPreviousCheckbox() {
