@@ -12,7 +12,14 @@ function isFocusedTextField() {
     let previousKey = undefined;
     const shortcutFunctions = new Map([
         ["g i", () => { document.location.href = "/admin/"; }],
-        ["g l", () => showDialog("model-list-dialog")]
+        ["g l", () => showDialog("model-list-dialog")],
+        ["g c", () => {
+            const currentModel = getCurrentModelInfo();
+            if (currentModel) {
+                showDialog("instance-list-dialog");
+                filterInstanceList();
+            }
+        }],
     ]);
 
     function registerDeclarativeShortcuts() {
@@ -155,6 +162,77 @@ function isFocusedTextField() {
     }
 
 
+    function filterInstanceList() {
+        const instanceListDialog = document.querySelector('#instance-list-dialog');
+        if (!instanceListDialog) {
+            return;
+        }
+
+        const appSections = [];
+        const currentModel = getCurrentModelInfo();
+        const instanceSection = document.querySelector('#current-model-instances');
+
+        // Hide instance section by default
+        if (instanceSection) {
+            instanceSection.style.display = 'none';
+        }
+
+        instanceListDialog.querySelectorAll('section').forEach(section => {
+            const options = [];
+            section.querySelectorAll('li a').forEach(container => {
+                if (currentModel && 
+                     container.dataset.appLabel === currentModel.appLabel && 
+                     container.dataset.modelName === currentModel.modelName) {
+                    options.push({
+                        title: container.innerHTML,
+                        node: container
+                    });
+                }
+            });
+
+            if (options.length > 0) {
+                appSections.push({
+                    node: section,
+                    options,
+                });
+            }
+        });
+
+        function checkValue(event) {
+            let filterValue = event.target.value;
+            if (filterValue) {
+                filterValue = filterValue.toLowerCase();
+            }
+            if (event.key === 'Escape') {
+                filterValue = '';
+                event.target.value = ''; // clear input
+            }
+
+            // Show/hide instance section based on current model
+            if (instanceSection && currentModel) {
+                let matchedInstances = false;
+                instanceSection.querySelectorAll('li a').forEach(link => {
+                    if (filterValue && link.textContent.toLowerCase().includes(filterValue)) {
+                        link.parentNode.style.display = '';
+                        matchedInstances = true;
+                    } else {
+                        link.parentNode.style.display = 'none';
+                    }
+                });
+                instanceSection.style.display = matchedInstances ? '' : 'none';
+            }
+        }
+
+        const nav = document.getElementById('instance-list-dialog-search');
+        nav.addEventListener('change', checkValue, false);
+        nav.addEventListener('input', checkValue, false);
+        nav.addEventListener('keydown', checkValue, false);
+
+        // We don't want to show anything on the list until the user starts typing
+        checkValue({target: {value: ''}, key: ''});
+    }
+
+
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", showDialogOnClick);
         document.addEventListener("DOMContentLoaded", replaceModifiers);
@@ -167,4 +245,27 @@ function isFocusedTextField() {
         registerDeclarativeShortcuts();
     }
     document.addEventListener("keydown", handleKeyDown);
+}
+
+
+function getCurrentModelInfo() {
+    // Try to get from window context first
+    if (window.djangoAdminContext?.modelName) {
+        return {
+            appLabel: window.djangoAdminContext.appLabel,
+            modelName: window.djangoAdminContext.modelName
+        };
+    }
+
+    // Fallback to URL parsing
+    const path = window.location.pathname;
+    const matches = path.match(/\/admin\/([^/]+)\/([^/]+)/);
+    if (matches) {
+        return {
+            appLabel: matches[1],
+            modelName: matches[2]
+        };
+    }
+
+    return null;
 }
