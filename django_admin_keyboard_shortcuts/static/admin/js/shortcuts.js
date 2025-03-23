@@ -11,7 +11,7 @@ function isFocusedTextField() {
 {
     let previousKey = undefined;
     const shortcutFunctions = new Map([
-        ["g i", () => { 
+        ["g i", () => {
             // Get the admin index URL from the json_script element
             const adminIndexElement = document.getElementById('admin-index-url');
             if (adminIndexElement) {
