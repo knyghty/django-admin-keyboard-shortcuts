@@ -180,8 +180,8 @@ function isFocusedTextField() {
         instanceListDialog.querySelectorAll('section').forEach(section => {
             const options = [];
             section.querySelectorAll('li a').forEach(container => {
-                if (currentModel && 
-                     container.dataset.appLabel === currentModel.appLabel && 
+                if (currentModel &&
+                     container.dataset.appLabel === currentModel.appLabel &&
                      container.dataset.modelName === currentModel.modelName) {
                     options.push({
                         title: container.innerHTML,

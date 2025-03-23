@@ -20,6 +20,7 @@ def all_apps():
 
     return apps
 
+
 # To fetch model instances
 @register.simple_tag
 def get_model_instances(opts):
