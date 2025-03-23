@@ -11,7 +11,17 @@ function isFocusedTextField() {
 {
     let previousKey = undefined;
     const shortcutFunctions = new Map([
-        ["g i", () => { document.location.href = "/admin/"; }],
+        ["g i", () => { 
+            // Get the admin index URL from the json_script element
+            const adminIndexElement = document.getElementById('admin-index-url');
+            if (adminIndexElement) {
+                const adminIndexUrl = JSON.parse(adminIndexElement.textContent);
+                document.location.href = adminIndexUrl;
+            } else {
+                // Fallback to default if element not found
+                document.location.href = "/admin/";
+            }
+        }],
         ["g l", () => showDialog("model-list-dialog")]
     ]);
 

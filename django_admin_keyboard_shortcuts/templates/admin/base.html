@@ -4,6 +4,8 @@
 {% block extrahead %}
   {{ block.super }}
   {% block extrahead_shortcuts %}
+    {% url 'admin:index' as admin_index_url %}
+    {{ admin_index_url|json_script:"admin-index-url" }}
     <link rel="stylesheet" href="{% static "admin/css/shortcuts.css" %}">
     <script src="{% static "admin/js/shortcuts.js" %}" async></script>
   {% endblock %}
