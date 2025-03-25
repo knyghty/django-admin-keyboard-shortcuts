@@ -1,7 +1,9 @@
+import tempfile
 import unittest
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 
@@ -13,7 +15,11 @@ class TestCase(unittest.TestCase):
 class SeleniumTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.driver = webdriver.Chrome()
+        user_data_dir = tempfile.mkdtemp()
+        options = Options()
+        options.add_argument(f"user-data-dir={user_data_dir}")
+        options.add_argument("--headless")
+        cls.driver = webdriver.Chrome(options=options)
 
     @classmethod
     def tearDownClass(cls):
