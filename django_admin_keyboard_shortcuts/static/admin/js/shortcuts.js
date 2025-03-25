@@ -8,7 +8,7 @@ const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
  */
 function isFocusedTextField() {
     const activeElement = document.activeElement;
-    return activeElement.nodeName === 'TEXTAREA' || 
+    return activeElement.nodeName === 'TEXTAREA' ||
            (activeElement.nodeName === 'INPUT' && (!activeElement.type || inputTextFieldTypes.includes(activeElement.type)));
 }
 
@@ -49,7 +49,7 @@ function isAppleDevice() {
  */
 function handleKeyDown(event) {
     if (isFocusedTextField()) return;
-    
+
     const keyCombo = previousKey ? `${previousKey} ${event.key}` : event.key;
     if (shortcutFunctions.has(keyCombo)) {
         shortcutFunctions.get(keyCombo)();
@@ -138,20 +138,20 @@ function filterModelList() {
 function showModelDialog() {
     const modelListDialog = document.getElementById('model-list-dialog');
     if (!modelListDialog) return;
-    
+
     // Clear previous search
     const searchInput = modelListDialog.querySelector('input[type="search"]');
     if (searchInput) {
         searchInput.value = '';
     }
-    
+
     modelListDialog.querySelectorAll('section').forEach(section => {
         section.style.display = ''; // Show all sections
         section.querySelectorAll('li').forEach(item => {
             item.style.display = ''; // Show all items
         });
     });
-    
+
     showDialog("model-list-dialog");
     setupModelListHandlers();
 }
@@ -161,12 +161,12 @@ function showModelDialog() {
  */
 function setupModelListHandlers() {
     const modelListDialog = document.getElementById('model-list-dialog');
-    
+
     // Remove any existing click handlers
     modelListDialog.querySelectorAll('li a').forEach(link => {
         link.removeEventListener('click', handleModelClick);
     });
-    
+
     // Add new click handlers
     modelListDialog.querySelectorAll('li a').forEach(link => {
         link.addEventListener('click', handleModelClick);
@@ -192,7 +192,7 @@ async function listInstances(query=null, signal=null) {
     const instanceDialog = document.getElementById('instance-list-dialog');
     if (!instanceDialog) return;
     const modelName = window.selectedModelName;
-    
+
     // Set the selected model chip
     const chipContainer = instanceDialog.querySelector('.selected-model-chip');
     if (chipContainer) {
@@ -220,7 +220,7 @@ async function listInstances(query=null, signal=null) {
         }
 
         const instances = await response.json();
-        
+
         // Update instance list
         instanceDialog.querySelector('h3').textContent = capitalize(modelName);
         const instanceList = instanceDialog.querySelector('ul');
@@ -231,7 +231,7 @@ async function listInstances(query=null, signal=null) {
                 </a>
             </li>
         `).join('');
-        
+
     } catch (error) {
         console.error('Error loading instances:', error);
     }
@@ -250,13 +250,13 @@ function handleModelClick(event) {
     const modelUrl = event.target.getAttribute('href');
 
     // if (window.isModelNative) {
-    //     window.location.href = 
+    //     window.location.href =
     // }
-    
+
     // Store the model URL for later use
     window.selectedModelUrl = modelUrl;
     window.selectedModelName = modelName;
-    
+
     // Close model dialog and open instance dialog
     document.getElementById('model-list-dialog').close();
     listInstances();
@@ -312,7 +312,7 @@ function filterInstanceList() {
         if (event.type === 'keydown' && event.key !== 'Escape') return;
 
         let query = event.target.value.toLowerCase().trim();
-        
+
         if (event.key === "Escape") {
             query = "";
             event.target.value = query;
@@ -321,7 +321,7 @@ function filterInstanceList() {
 
         // Clear any existing timeout
         clearTimeout(debounceTimer);
-        
+
         // Avoid short queries
         if (query.length < 2) return;
 
@@ -332,7 +332,7 @@ function filterInstanceList() {
 
         // Create new controller for this request
         currentController = new AbortController();
-    
+
         // Set a new timeout
         debounceTimer = setTimeout(async () => {
             try {
@@ -347,7 +347,7 @@ function filterInstanceList() {
         }, 500); // Wait 500ms after user stops typing
     }
 
-    ["input", "keydown"].forEach(evt => 
+    ["input", "keydown"].forEach(evt =>
         searchInput.addEventListener(evt, updateList));
 }
 
@@ -373,6 +373,6 @@ function initShortcuts() {
     document.addEventListener("keydown", handleKeyDown);
 }
 
-document.readyState === "loading" 
+document.readyState === "loading"
     ? document.addEventListener("DOMContentLoaded", initShortcuts)
     : initShortcuts();
