@@ -1,54 +1,81 @@
-kbd {
-  background-color: var(--body-bg);
-  border-radius: 3px;
-  border: 1px solid var(--border-color);
-  box-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.2),
-    0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
-  color: var(--body-fg);
-  display: inline-block;
-  font-size: 1em;
-  line-height: 1;
-  padding: 0.5em 0.5em;
-  white-space: nowrap;
-}
-
+/* General Styles */
 dialog {
-  background-color: var(--darkened-bg);
-  color: var(--body-fg);
-  min-width: 20em;
-  padding: 1em;
-  height: 50vh;
+  background-color: var(--darkened-bg, #fff);
+  color: var(--body-fg, #333);
+  border: none;
+  border-radius: 12px;
+  min-width: 320px;
+  max-width: 90vw;
   width: 40vw;
+  height: auto;
+  max-height: 70vh;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow-y: hidden;
 }
 
+/* Dialog Header */
 .dialog-heading {
-  align-items: center;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color, #ccc);
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .dialog-heading h2 {
   margin: 0;
+  font-size: 1.5rem;
+  color: var(--body-fg, #333);
 }
 
-dialog h3 {
-  background: var(--header-bg);
-  color: var(--header-color);
-  margin: 0;
-  padding: 0.5em 1em;
-}
-
-dialog button {
-  background: inherit;
+/* Close Button */
+.dialog-heading button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--body-fg, #333);
   cursor: pointer;
-  border: 0;
-  font-size: 1.5em;
-  padding: 0;
-  width: 30px;
-  height: 30px;
+  transition: color 0.2s ease-in-out;
 }
 
+.dialog-heading button:hover {
+  color: #ff4d4d;
+}
+
+/* Search Input */
+#model-list-dialog-search {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1rem;
+  transition: border 0.2s ease-in-out;
+  margin-bottom: 1em;
+}
+
+#model-list-dialog-search:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+dialog .result {
+  height: 80%;
+  overflow-y: auto;
+}
+
+/* Section Headers */
+dialog h3 {
+  color: var(--body-fg, #333);
+  margin: 10px 0;
+  padding: 10px 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid var(--border-color, #ccc);
+}
+
+/* List Styles */
 dialog ul {
   list-style: none;
   margin: 0;
@@ -56,15 +83,39 @@ dialog ul {
 }
 
 dialog ul li {
-  align-items: center;
-  column-gap: 1em;
   display: flex;
-  justify-content: space-between;
-  border-top: 1px solid var(--border-color);
-  padding: 1em;
+  align-items: center;
+  border-radius: 6px;
+  padding: 0;
+  transition: background 0.2s ease-in-out;
 }
 
-#model-list-dialog-search {
-  margin: 0.5em 0em;
-  width: 12vw;
+dialog ul li:hover {
+  background: var(--hover-bg, rgba(0, 123, 255, 0.1));
+}
+
+/* Links */
+dialog ul li a {
+  width: 100%;
+  text-decoration: none;
+  padding: 8px 10px;
+  color: var(--link-color, #007bff);
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.2s ease-in-out;
+}
+dialog ul li a:hover {
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  dialog {
+    width: 90vw;
+    height: auto;
+    max-height: 80vh;
+  }
 }
