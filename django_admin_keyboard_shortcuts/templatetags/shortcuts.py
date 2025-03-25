@@ -19,11 +19,3 @@ def all_apps():
             apps[app_label].append(model_data)
 
     return apps
-
-
-# To fetch model instances
-@register.simple_tag
-def get_model_instances(opts):
-    if not opts:
-        return []
-    return opts.model._default_manager.all()

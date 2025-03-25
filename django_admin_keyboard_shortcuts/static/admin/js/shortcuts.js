@@ -2,270 +2,377 @@
 
 const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
 
+/**
+ * Checks if the currently focused element is a text field.
+ * @returns {boolean} True if a text field is focused, otherwise false.
+ */
 function isFocusedTextField() {
-    const tag = document.activeElement.nodeName;
-    const type = document.activeElement.type;
-    return tag === 'TEXTAREA' || (tag === 'INPUT' && (!type || inputTextFieldTypes.includes(type)));
+    const activeElement = document.activeElement;
+    return activeElement.nodeName === 'TEXTAREA' || 
+           (activeElement.nodeName === 'INPUT' && (!activeElement.type || inputTextFieldTypes.includes(activeElement.type)));
 }
 
-{
-    let previousKey = undefined;
-    const shortcutFunctions = new Map([
-        ["g i", () => { document.location.href = "/admin/"; }],
-        ["g l", () => showDialog("model-list-dialog")],
-        ["g c", () => {
-            const currentModel = getCurrentModelInfo();
-            if (currentModel) {
-                showDialog("instance-list-dialog");
-                filterInstanceList();
-            }
-        }],
-    ]);
+const shortcutFunctions = new Map([
+    ["g i", () => { window.location.href = "/admin/"; }],
+    ["g l", () => {
+        window.isModelNative = true;
+        showDialog("model-list-dialog");
+    }],
+    ["g c", () => {
+        window.isModelNative = false;
+        showModelDialog();
+    }],
+]);
 
-    function registerDeclarativeShortcuts() {
-        const elements = document.querySelectorAll('[data-keyboard-shortcut]');
-        for (const element of elements) {
-            shortcutFunctions.set(element.getAttribute('data-keyboard-shortcut'), () => {
-                element.click();
-            });
-        }
+let previousKey = null;
+
+/**
+ * Registers declarative keyboard shortcuts from data attributes.
+ */
+function registerDeclarativeShortcuts() {
+    document.querySelectorAll('[data-keyboard-shortcut]').forEach(element => {
+        shortcutFunctions.set(element.getAttribute('data-keyboard-shortcut'), () => element.click());
+    });
+}
+
+/**
+ * Detects if the user is on an Apple device.
+ * @returns {boolean} True if Apple device, otherwise false.
+ */
+function isAppleDevice() {
+    return navigator.platform.startsWith("Mac") || navigator.platform === "iPhone";
+}
+
+/**
+ * Handles keydown events and triggers corresponding shortcut actions.
+ * @param {KeyboardEvent} event - The keydown event object.
+ */
+function handleKeyDown(event) {
+    if (isFocusedTextField()) return;
+    
+    const keyCombo = previousKey ? `${previousKey} ${event.key}` : event.key;
+    if (shortcutFunctions.has(keyCombo)) {
+        shortcutFunctions.get(keyCombo)();
+        previousKey = null;
+        return;
     }
+    previousKey = event.key;
+    setTimeout(() => { if (previousKey === event.key) previousKey = null; }, 5000);
+}
 
-    function isApple() {
-        return (navigator.platform.indexOf("Mac") === 0 || navigator.platform === "iPhone");
-    }
+/**
+ * Shows a modal dialog by its ID.
+ * @param {string} id - The ID of the dialog to display.
+ */
+function showDialog(id) {
+    const dialog = document.getElementById(id);
+    const searchInput = dialog.querySelector('input[type="search"]');
+    if (searchInput) searchInput.value = '';
+    filterModelList();
+    if (dialog) dialog.showModal();
+}
 
-    function removePreviousKey(key) {
-        if (previousKey === key) {
-            previousKey = undefined;
-        }
-    }
+/**
+ * Shows the shortcut dialog.
+ */
+function showShortcutsDialog() {
+    showDialog("shortcuts-dialog");
+}
 
-    function storePreviousKey(key) {
-        previousKey = key;
-        setTimeout(function() {
-            removePreviousKey(key);
-        }, 5000);
-    }
+/**
+ * Initializes event listeners for shortcut modal button.
+ */
+function initShortcutButton() {
+    document.getElementById("open-shortcuts")?.addEventListener("click", showShortcutsDialog);
+}
 
-    function showDialog(id) {
-        const dialog = document.getElementById(id);
-        dialog.showModal();
-    }
-
-    function showShortcutsDialog() {
-        showDialog("shortcuts-dialog");
-    }
-
-    function showDialogOnClick() {
-        const dialogButton = document.getElementById("open-shortcuts");
-        dialogButton.addEventListener("click", showShortcutsDialog);
-    }
-
-    function handleKeyDown(event) {
-        // If we're in a focused text field, don't apply keyboard shortcuts
-        if (isFocusedTextField()) {
-            return;
-        }
-
-        // If there's a previous key, we first check whether the combination of the
-        // previous key followed by the current key are a shortcut
-        const shortcutWithPreviousKey = previousKey ? `${previousKey} ${event.key}` : null;
-        if (shortcutWithPreviousKey && shortcutFunctions.has(shortcutWithPreviousKey)) {
-            shortcutFunctions.get(shortcutWithPreviousKey)();
-            return;
-        }
-
-        // Otherwise, check if the new key has a shortcut, e.g `?`
-        if (shortcutFunctions.has(event.key)) {
-            shortcutFunctions.get(event.key)();
-            return;
-        }
-
-        // Simply store the key for the next keyDown
-        storePreviousKey(event.key);
-
-    }
-
-    function replaceModifiers() {
-        if (isApple()) {
-            document.querySelectorAll(".shortcut-keys .alt").forEach(function(modifier) {
-                modifier.innerHTML = "⌥";
-            });
-        }
-    }
-
-    // This overlaps a lot with the initSidebarQuickFilter function
-    // defined in django/contrib/admin/static/admin/js/nav_sidebar.js
-    // If/when merged into core, we could try to reuse some parts
-    function filterModelList() {
-        const modelListDialog = document.getElementById('model-list-dialog');
-        if (!modelListDialog) {
-            return;
-        }
-
-        const appSections = [];
-
-        modelListDialog.querySelectorAll('section').forEach(section => {
-            const options = [];
-            section.querySelectorAll('li a').forEach(container => options.push({
-                title: container.innerHTML, node: container
-            }));
-
-            appSections.push({
-                node: section, options,
-            });
+/**
+ * Replaces modifier key symbols for Mac users.
+ */
+function replaceModifiers() {
+    if (isAppleDevice()) {
+        document.querySelectorAll(".shortcut-keys .alt").forEach(modifier => {
+            modifier.innerHTML = "⌥";
         });
-
-        function checkValue(event) {
-            let filterValue = event.target.value;
-            if (filterValue) {
-                filterValue = filterValue.toLowerCase();
-            }
-            if (event.key === 'Escape') {
-                filterValue = '';
-                event.target.value = ''; // clear input
-            }
-
-            appSections.forEach(section => {
-                let matched = false;
-                // Check if any of the app models match the filter text
-                section.options.forEach((option) => {
-                    let optionDisplay = '';
-                    if (option.title.toLowerCase().indexOf(filterValue) === -1) {
-                        optionDisplay = 'none';
-                    } else {
-                        matched = true;
-                    }
-                    // Set display in parent <li> element
-                    option.node.parentNode.style.display = optionDisplay;
-                });
-
-                let sectionDisplay = '';
-                // If there's no filter value or no matched models
-                // for the section, we hide the section entirely
-                if (!filterValue || !matched) {
-                    sectionDisplay = 'none';
-                }
-                // Set display for the app section
-                section.node.style.display = sectionDisplay;
-            });
-        }
-
-        const nav = document.getElementById('model-list-dialog-search');
-        nav.addEventListener('change', checkValue, false);
-        nav.addEventListener('input', checkValue, false);
-        nav.addEventListener('keydown', checkValue, false);
-
-        // We don't want to show anything on the list until the user starts typing
-        checkValue({target: {value: ''}, key: ''});
     }
+}
 
+/**
+ * Filters the model list based on user input.
+ */
+function filterModelList() {
+    const searchInput = document.getElementById("model-list-dialog-search");
+    const modelListDialog = document.getElementById("model-list-dialog");
+    if (!searchInput || !modelListDialog) return;
 
-    function filterInstanceList() {
-        const instanceListDialog = document.querySelector('#instance-list-dialog');
-        if (!instanceListDialog) {
-            return;
-        }
+    const sections = Array.from(modelListDialog.querySelectorAll("section"));
 
-        const appSections = [];
-        const currentModel = getCurrentModelInfo();
-        const instanceSection = document.querySelector('#current-model-instances');
+    function updateVisibility(event) {
+        let query = event.target.value.toLowerCase().trim();
+        if (event.key === "Escape") query = "";
+        event.target.value = query;
 
-        // Hide instance section by default
-        if (instanceSection) {
-            instanceSection.style.display = 'none';
-        }
-
-        instanceListDialog.querySelectorAll('section').forEach(section => {
-            const options = [];
-            section.querySelectorAll('li a').forEach(container => {
-                if (currentModel &&
-                     container.dataset.appLabel === currentModel.appLabel &&
-                     container.dataset.modelName === currentModel.modelName) {
-                    options.push({
-                        title: container.innerHTML,
-                        node: container
-                    });
+        sections.forEach(section => {
+            const items = Array.from(section.querySelectorAll("li a"));
+            let hasMatch = false;
+            items.map(item => {
+                const match = item.textContent.toLowerCase().includes(query);
+                item.parentElement.style.display = match ? "" : "none";
+                if (match) {
+                    hasMatch = true;
                 }
             });
+            section.style.display = hasMatch ? "" : "none";
+        });
+    }
 
-            if (options.length > 0) {
-                appSections.push({
-                    node: section,
-                    options,
-                });
-            }
+    ["input", "change", "keydown"].forEach(evt => searchInput.addEventListener(evt, updateVisibility));
+
+    // Reset search value and list
+    updateVisibility({target: {value: ''}})
+}
+
+/**
+ * Shows the model selection dialog and resets its state.
+ */
+function showModelDialog() {
+    const modelListDialog = document.getElementById('model-list-dialog');
+    if (!modelListDialog) return;
+    
+    // Clear previous search
+    const searchInput = modelListDialog.querySelector('input[type="search"]');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    modelListDialog.querySelectorAll('section').forEach(section => {
+        section.style.display = ''; // Show all sections
+        section.querySelectorAll('li').forEach(item => {
+            item.style.display = ''; // Show all items
+        });
+    });
+    
+    showDialog("model-list-dialog");
+    setupModelListHandlers();
+}
+
+/**
+ * Sets up event handlers for the model list dialog items.
+ */
+function setupModelListHandlers() {
+    const modelListDialog = document.getElementById('model-list-dialog');
+    
+    // Remove any existing click handlers
+    modelListDialog.querySelectorAll('li a').forEach(link => {
+        link.removeEventListener('click', handleModelClick);
+    });
+    
+    // Add new click handlers
+    modelListDialog.querySelectorAll('li a').forEach(link => {
+        link.addEventListener('click', handleModelClick);
+    });
+}
+
+/**
+ * Makes 1st letter capital and adds 's' at the end
+ * @param {String} string - The string input
+ * @returns {String} The modified string
+ */
+function capitalize(string) {
+    const str = string.trim();
+    return str.slice(0, 1).toUpperCase() + str.slice(1) + 's';
+}
+
+/**
+ * Lists instances for a selected model, optionally filtered by a search query.
+ * @param {string|null} query - Search query to filter instances
+ * @param {AbortSignal|null} signal - AbortController signal for cancelling requests
+ */
+async function listInstances(query=null, signal=null) {
+    const instanceDialog = document.getElementById('instance-list-dialog');
+    if (!instanceDialog) return;
+    const modelName = window.selectedModelName;
+    
+    // Set the selected model chip
+    const chipContainer = instanceDialog.querySelector('.selected-model-chip');
+    if (chipContainer) {
+        chipContainer.textContent = modelName;
+        chipContainer.style.display = 'inline-block';
+    }
+
+    try {
+        const url = window.selectedModelUrl
+            .replace(/\/$/, '')
+            .replace('admin', 'api/instances');
+
+        // eg. /en-gb/api/instances/demo/artist?q=fre
+        const response = await fetch(`${url}${query ? '?q='+query : ''}`, {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            credentials: 'same-origin',
+            signal
         });
 
-        function checkValue(event) {
-            let filterValue = event.target.value;
-            if (filterValue) {
-                filterValue = filterValue.toLowerCase();
-            }
-            if (event.key === 'Escape') {
-                filterValue = '';
-                event.target.value = ''; // clear input
-            }
-
-            // Show/hide instance section based on current model
-            if (instanceSection && currentModel) {
-                let matchedInstances = false;
-                instanceSection.querySelectorAll('li a').forEach(link => {
-                    if (filterValue && link.textContent.toLowerCase().includes(filterValue)) {
-                        link.parentNode.style.display = '';
-                        matchedInstances = true;
-                    } else {
-                        link.parentNode.style.display = 'none';
-                    }
-                });
-                instanceSection.style.display = matchedInstances ? '' : 'none';
-            }
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const nav = document.getElementById('instance-list-dialog-search');
-        nav.addEventListener('change', checkValue, false);
-        nav.addEventListener('input', checkValue, false);
-        nav.addEventListener('keydown', checkValue, false);
+        const instances = await response.json();
+        
+        // Update instance list
+        instanceDialog.querySelector('h3').textContent = capitalize(modelName);
+        const instanceList = instanceDialog.querySelector('ul');
+        instanceList.innerHTML = instances.map(instance => `
+            <li >
+                <a href="${window.selectedModelUrl}${instance.id}/change/">
+                    ${instance.title}
+                </a>
+            </li>
+        `).join('');
+        
+    } catch (error) {
+        console.error('Error loading instances:', error);
+    }
+}
 
-        // We don't want to show anything on the list until the user starts typing
-        checkValue({target: {value: ''}, key: ''});
+/**
+ * Handles click events on model items in the model list dialog.
+ * @param {Event} event - The click event object
+ */
+function handleModelClick(event) {
+    if (window.isModelNative) {
+        return;
+    }
+    event.preventDefault();
+    const modelName = event.target.getAttribute('data-model-name');
+    const modelUrl = event.target.getAttribute('href');
+
+    // if (window.isModelNative) {
+    //     window.location.href = 
+    // }
+    
+    // Store the model URL for later use
+    window.selectedModelUrl = modelUrl;
+    window.selectedModelName = modelName;
+    
+    // Close model dialog and open instance dialog
+    document.getElementById('model-list-dialog').close();
+    listInstances();
+
+    showDialog('instance-list-dialog');
+    setupInstanceListHandlers();
+}
+
+/**
+ * Sets up event handlers for instance list items and search functionality.
+ */
+function setupInstanceListHandlers() {
+    const instanceListDialog = document.getElementById('instance-list-dialog');
+    if (!instanceListDialog) return;
+
+    // Setup search functionality
+    const searchInput = instanceListDialog.querySelector('input[type="search"]');
+    if (searchInput) {
+        searchInput.value = ''; // Clear previous search
+        searchInput.focus();
     }
 
+    // Setup instance click handlers
+    instanceListDialog.querySelectorAll('li a').forEach(link => {
+        link.removeEventListener('click', handleInstanceClick);
+        link.addEventListener('click', handleInstanceClick);
+    });
+}
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", showDialogOnClick);
-        document.addEventListener("DOMContentLoaded", replaceModifiers);
-        document.addEventListener("DOMContentLoaded", filterModelList);
-        document.addEventListener("DOMContentLoaded", registerDeclarativeShortcuts);
-    } else {
-        showDialogOnClick();
-        replaceModifiers();
-        filterModelList();
-        registerDeclarativeShortcuts();
+/**
+ * Handles click events on instance items in the instance list dialog.
+ * @param {Event} event - The click event object
+ */
+function handleInstanceClick(event) {
+    event.preventDefault();
+    const instanceUrl = event.target.getAttribute('href');
+    document.getElementById('instance-list-dialog').close();
+    window.location.href = instanceUrl;
+}
+
+/**
+ * Sets up search functionality for the instance list with debouncing.
+ */
+function filterInstanceList() {
+    const searchInput = document.getElementById("instance-list-search");
+    const instanceListDialog = document.getElementById("instance-list-dialog");
+    if (!searchInput || !instanceListDialog) return;
+
+    let debounceTimer;
+    let currentController = null;
+
+    async function updateList(event) {
+        if (event.type === 'keydown' && event.key !== 'Escape') return;
+
+        let query = event.target.value.toLowerCase().trim();
+        
+        if (event.key === "Escape") {
+            query = "";
+            event.target.value = query;
+            return;
+        }
+
+        // Clear any existing timeout
+        clearTimeout(debounceTimer);
+        
+        // Avoid short queries
+        if (query.length < 2) return;
+
+        // Abort any pending requests
+        if (currentController) {
+            currentController.abort();
+        }
+
+        // Create new controller for this request
+        currentController = new AbortController();
+    
+        // Set a new timeout
+        debounceTimer = setTimeout(async () => {
+            try {
+                await listInstances(query, currentController.signal);
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.log('Search request cancelled');
+                } else {
+                    console.error('Search error:', error);
+                }
+            }
+        }, 500); // Wait 500ms after user stops typing
     }
+
+    ["input", "keydown"].forEach(evt => 
+        searchInput.addEventListener(evt, updateList));
+}
+
+/**
+ * Removes the currently selected model and returns to model selection dialog.
+ */
+function removeCurrentModel() {
+    window.selectedModelUrl = null;
+    window.selectedModelName = null;
+    document.getElementById("instance-list-dialog").close();
+    showModelDialog();
+}
+
+/**
+ * Initializes all shortcut-related functionalities.
+ */
+function initShortcuts() {
+    initShortcutButton();
+    replaceModifiers();
+    filterModelList();
+    filterInstanceList();
+    registerDeclarativeShortcuts();
     document.addEventListener("keydown", handleKeyDown);
 }
 
-
-function getCurrentModelInfo() {
-    // Try to get from window context first
-    if (window.djangoAdminContext?.modelName) {
-        return {
-            appLabel: window.djangoAdminContext.appLabel,
-            modelName: window.djangoAdminContext.modelName
-        };
-    }
-
-    // Fallback to URL parsing
-    const path = window.location.pathname;
-    const matches = path.match(/\/admin\/([^/]+)\/([^/]+)/);
-    if (matches) {
-        return {
-            appLabel: matches[1],
-            modelName: matches[2]
-        };
-    }
-
-    return null;
-}
+document.readyState === "loading" 
+    ? document.addEventListener("DOMContentLoaded", initShortcuts)
+    : initShortcuts();

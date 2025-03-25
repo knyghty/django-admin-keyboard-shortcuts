@@ -32,6 +32,11 @@ dialog {
   margin: 0;
 }
 
+dialog .row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
 dialog h3 {
   background: var(--header-bg);
   color: var(--header-color);
@@ -43,10 +48,21 @@ dialog button {
   background: inherit;
   cursor: pointer;
   border: 0;
+}
+dialog button.close {
   font-size: 1.5em;
   padding: 0;
   width: 30px;
   height: 30px;
+}
+dialog .chip {
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: var(--border-color) ;
+}
+dialog .chip p {
+  margin: 0;
 }
 
 dialog ul {
@@ -68,4 +84,13 @@ dialog ul li {
 #instance-list-dialog-search {
   margin: 0.5em 0em;
   width: 12vw;
+}
+.model-chip {
+  background-color: var(--primary);
+  color: var(--primary-fg);
+  padding: 4px 12px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  display: inline-block;
+  font-size: 0.875rem;
 }

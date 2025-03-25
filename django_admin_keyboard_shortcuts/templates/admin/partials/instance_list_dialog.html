@@ -1,0 +1,33 @@
+{% load static i18n shortcuts %}
+{% load admin_urls %}
+<dialog id="instance-list-dialog">
+  <div class="dialog-heading">
+    <h2>{% translate "Instances" %}</h2>
+    <form method="dialog">
+      <button class="close" aria-label="{% translate 'Close' %}">&#10006;</button>
+    </form>
+  </div>
+  <div class="row">
+    <form id="instance-list-dialog-form">
+      <label for="instance-list-search" style="display: none;">
+        {% translate 'Search instance' %}
+      </label>
+      <input
+        type="search"
+        id="instance-list-search"
+        placeholder="{% translate 'Search instances' %}"
+        autocomplete="off"
+      />
+    </form>
+    <button class="chip" aria-label="{% translate 'Remove' %}" onclick="removeCurrentModel()">
+      <p class="selected-model-chip"></p>
+      <span>&#10006;</span>
+    </button>
+  </div>
+  <div id="result">
+    <section id="current-model-instances">
+      <h3></h3>
+      <ul></ul>
+    </section>
+  </div>
+</dialog>
