@@ -1,0 +1,30 @@
+{% load static i18n shortcuts %}
+{% load admin_urls %}
+
+<div class="dialog-heading">
+  <h2>{% translate "Keyboard shortcuts" %}</h2>
+  <form method="dialog">
+    <button class="close" aria-label="{% translate 'Close' %}">&#10006;</button>
+  </form>
+</div>
+<section>
+  <h3>{% translate "Global" %}</h3>
+  <ul>
+    <li>
+      <div class="shortcut-description">{% translate "Show this dialog" %}</div>
+      <div class="shortcut-keys"><kbd>?</kbd></div>
+    </li>
+    <li>
+      <div class="shortcut-description">{% translate "Go to the site index" %}</div>
+      <div class="shortcut-keys"><kbd>g</kbd> <kbd>i</kdb></div>
+    </li>
+    <li>
+      <div class="shortcut-description">{% translate "Go to a change list page" %}</div>
+      <div class="shortcut-keys"><kbd>g</kbd> <kbd>l</kdb></div>
+    </li>
+    <li>
+      <div class="shortcut-description">{% translate "Go to a change instance page" %}</div>
+      <div class="shortcut-keys"><kbd>g</kbd> <kbd>c</kdb></div>
+    </li>
+  </ul>
+</section>

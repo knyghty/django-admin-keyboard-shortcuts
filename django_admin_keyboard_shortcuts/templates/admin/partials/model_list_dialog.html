@@ -1,0 +1,40 @@
+{% load static i18n shortcuts %}
+{% load admin_urls %}
+<dialog id="model-list-dialog">
+    <div class="dialog-heading">
+      <h2>{% translate "Models" %}</h2>
+      <form method="dialog">
+        <button aria-label="{% translate 'Close' %}">&#10006;</button>
+      </form>
+    </div>
+    <form id="model-list-dialog-form">
+      <label for="model-list-dialog-search">
+        {% translate 'Search model' %}
+      </label>
+      <input
+        type="search"
+        id="model-list-dialog-search"
+        placeholder="{% translate 'Start typing to search...' %}"
+        autocomplete="off"
+      >
+    </form>
+    <div>
+      {% all_apps as apps %}
+      {% for app_label, models in apps.items %}
+        <section>
+          <h3>{{ app_label }}</h3>
+          <ul>
+          {% for model in models %}
+            <li>
+              <a href="{{ model.url }}"
+                data-app-label="{{ app_label }}"
+                data-model-name="{{ model.name|lower }}">
+                  {{ model.name }}
+              </a>
+            </li>
+          {% endfor %}
+          </ul>
+        </section>
+      {% endfor %}
+    </div>
+</dialog>
