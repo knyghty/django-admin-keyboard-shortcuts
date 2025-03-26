@@ -6,13 +6,6 @@
   {{ block.super }}
   {% block extrahead_shortcuts %}
     <link rel="stylesheet" href="{% static 'admin/css/shortcuts.css' %}">
-    <script>
-      window.djangoAdminContext = {
-        appLabel: '{{ app_label|default:"" }}',
-        modelName: '{{ opts.model_name|default:"" }}',
-        viewName: '{{ view_name|default:"" }}'
-      };
-    </script>
     <script src="{% static 'admin/js/shortcuts.js' %}" async></script>
   {% endblock %}
 {% endblock %}
