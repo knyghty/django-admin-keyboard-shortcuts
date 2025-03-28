@@ -62,7 +62,7 @@ class InstanceSearchJsonView(BaseListView):
         if search_use_distinct:
             qs = qs.distinct()
         if not qs.query.order_by:
-            qs = qs.order_by('pk')
+            qs = qs.order_by("pk")
         return qs
 
     def process_request(self, request):
