@@ -1,7 +1,9 @@
 from django.apps import apps
 from django.contrib.admin.exceptions import NotRegistered
-from django.core.exceptions import FieldDoesNotExist, PermissionDenied
-from django.http import Http404, JsonResponse
+from django.core.exceptions import FieldDoesNotExist
+from django.core.exceptions import PermissionDenied
+from django.http import Http404
+from django.http import JsonResponse
 from django.views.generic.list import BaseListView
 
 
