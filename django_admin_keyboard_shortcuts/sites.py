@@ -1,8 +1,8 @@
 from functools import update_wrapper
 
 from django.contrib import admin
-from django.urls import reverse_lazy
 from django.urls import path
+from django.urls import reverse_lazy
 
 from django_admin_keyboard_shortcuts.views.instance_search import InstanceSearchJsonView
 
@@ -22,9 +22,13 @@ class KSAdminSite(admin.AdminSite):
 
         urls = super().get_urls()
         custom_urls = [
-            path("instance_search/", wrap(self.instance_search_view), name="instance_search"),
+            path(
+                "instance_search/",
+                wrap(self.instance_search_view),
+                name="instance_search",
+            ),
         ]
-        return custom_urls+urls
+        return custom_urls + urls
 
     def instance_search_view(self, request):
         return InstanceSearchJsonView.as_view(admin_site=self)(request)
