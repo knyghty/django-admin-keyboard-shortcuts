@@ -1,10 +1,12 @@
 from django.apps import apps
 from django.contrib.admin.exceptions import NotRegistered
 from django.core.exceptions import PermissionDenied
-from django.http import Http404, JsonResponse
+from django.http import Http404
+from django.http import JsonResponse
 from django.views.generic.list import BaseListView
 
 # Based on select2's AutocompleteJsonView class in django/contrib/admin/views/autocomplete.py
+
 
 class InstanceSearchJsonView(BaseListView):
     """Handle InstanceSearchWidget's AJAX requests for model instances."""
@@ -34,8 +36,7 @@ class InstanceSearchJsonView(BaseListView):
         return JsonResponse(
             {
                 "results": [
-                    self.serialize_result(obj)
-                    for obj in context["object_list"]
+                    self.serialize_result(obj) for obj in context["object_list"]
                 ],
                 "pagination": {"more": context["page_obj"].has_next()},
             }
