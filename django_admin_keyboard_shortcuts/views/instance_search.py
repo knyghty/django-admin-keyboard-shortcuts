@@ -1,14 +1,13 @@
 from django.apps import apps
 from django.contrib.admin.exceptions import NotRegistered
-from django.core.exceptions import FieldDoesNotExist
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.views.generic.list import BaseListView
 
+# Based on select2's AutocompleteJsonView class in django/contrib/admin/views/autocomplete.py
 
-class AutocompleteJsonView(BaseListView):
-    """Handle AutocompleteWidget's AJAX requests for data."""
+class InstanceSearchJsonView(BaseListView):
+    """Handle InstanceSearchWidget's AJAX requests for model instances."""
 
     paginate_by = 20
     admin_site = None
@@ -25,8 +24,6 @@ class AutocompleteJsonView(BaseListView):
         (
             self.term,
             self.model_admin,
-            self.source_field,
-            to_field_name,
         ) = self.process_request(request)
 
         if not self.has_perm(request):
@@ -37,19 +34,19 @@ class AutocompleteJsonView(BaseListView):
         return JsonResponse(
             {
                 "results": [
-                    self.serialize_result(obj, to_field_name)
+                    self.serialize_result(obj)
                     for obj in context["object_list"]
                 ],
                 "pagination": {"more": context["page_obj"].has_next()},
             }
         )
 
-    def serialize_result(self, obj, to_field_name):
+    def serialize_result(self, obj):
         """
         Convert the provided model object to a dictionary that is added to the
         results list.
         """
-        return {"id": str(getattr(obj, to_field_name)), "text": str(obj)}
+        return {"id": str(obj.pk), "text": str(obj)}
 
     def get_paginator(self, *args, **kwargs):
         """Use the ModelAdmin's paginator."""
@@ -58,7 +55,6 @@ class AutocompleteJsonView(BaseListView):
     def get_queryset(self):
         """Return queryset based on ModelAdmin.get_search_results()."""
         qs = self.model_admin.get_queryset(self.request)
-        qs = qs.complex_filter(self.source_field.get_limit_choices_to())
         qs, search_use_distinct = self.model_admin.get_search_results(
             self.request, qs, self.term
         )
@@ -81,44 +77,28 @@ class AutocompleteJsonView(BaseListView):
         try:
             app_label = request.GET["app_label"]
             model_name = request.GET["model_name"]
-            field_name = request.GET["field_name"]
         except KeyError as e:
             raise PermissionDenied from e
 
         # Retrieve objects from parameters.
         try:
-            source_model = apps.get_model(app_label, model_name)
+            model = apps.get_model(app_label, model_name)
         except LookupError as e:
             raise PermissionDenied from e
 
         try:
-            source_field = source_model._meta.get_field(field_name)
-        except FieldDoesNotExist as e:
-            raise PermissionDenied from e
-        try:
-            remote_model = source_field.remote_field.model
-        except AttributeError as e:
-            raise PermissionDenied from e
-        try:
-            model_admin = self.admin_site.get_model_admin(remote_model)
+            model_admin = self.admin_site.get_model_admin(model)
         except NotRegistered as e:
             raise PermissionDenied from e
 
         # Validate suitability of objects.
         if not model_admin.get_search_fields(request):
             raise Http404(
-                "%s must have search_fields for the autocomplete_view."
+                "%s must have search_fields for the instance_search_view."
                 % type(model_admin).__qualname__
             )
 
-        to_field_name = getattr(
-            source_field.remote_field, "field_name", remote_model._meta.pk.attname
-        )
-        to_field_name = remote_model._meta.get_field(to_field_name).attname
-        if not model_admin.to_field_allowed(request, to_field_name):
-            raise PermissionDenied
-
-        return term, model_admin, source_field, to_field_name
+        return term, model_admin
 
     def has_perm(self, request, obj=None):
         """Check if user has permission to access the related model."""
