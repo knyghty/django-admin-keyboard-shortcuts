@@ -7,7 +7,8 @@ from django.urls import reverse_lazy
 from django_admin_keyboard_shortcuts.views.instance_search import InstanceSearchJsonView
 
 
-# If/when this gets merged into django, the contents of this class should be merged into django/contrib/admin/sites.AdminSite
+# If/when this gets merged into django,
+# the contents of this class should be merged into django/contrib/admin/sites.AdminSite
 # Snippets based on autocomplete_view logic in django/contrib/admin/sites.py
 class KSAdminSite(admin.AdminSite):
     def get_urls(self):

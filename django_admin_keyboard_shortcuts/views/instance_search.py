@@ -5,7 +5,8 @@ from django.http import Http404
 from django.http import JsonResponse
 from django.views.generic.list import BaseListView
 
-# Based on select2's AutocompleteJsonView class in django/contrib/admin/views/autocomplete.py
+# Based on select2's AutocompleteJsonView class
+#  in django/contrib/admin/views/autocomplete.py
 
 
 class InstanceSearchJsonView(BaseListView):
@@ -97,8 +98,8 @@ class InstanceSearchJsonView(BaseListView):
         # Validate suitability of objects.
         if not model_admin.get_search_fields(request):
             raise Http404(
-                "%s must have search_fields for the instance_search_view."
-                % type(model_admin).__qualname__
+                f"{type(model_admin).__qualname__} must have search_fields"
+                " for the instance_search_view."
             )
 
         return term, model_admin
