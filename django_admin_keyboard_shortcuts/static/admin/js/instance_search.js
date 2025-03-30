@@ -18,10 +18,10 @@
                         page: params.page,
                         app_label: appLabel,
                         model_name: modelName,
-                        cache: true,
-                        delay: 250
                     };
-                }
+                },
+                cache: true,
+                delay: 250
             },
             dropdownParent: $dialog
         });
