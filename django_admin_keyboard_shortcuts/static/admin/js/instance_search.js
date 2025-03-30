@@ -3,6 +3,16 @@
     const $ = django.jQuery;
 
     $(document).ready(function() {
+        const hideSelectBox = (selectBox) => $(selectBox).next('.select2-container').hide();
+        const showSelectBox = (selectBox) => $(selectBox).next('.select2-container').show();
+        const openSelectBox = (selectBox) => $(selectBox).select2('open');
+
+        django.SelectBoxUtils = {
+            hide: hideSelectBox,
+            show: showSelectBox,
+            open: openSelectBox
+        }
+
         const $dialog = $('#instance-list-dialog');
 
         const modelSelectBox = '#shortcuts-model-select';
@@ -44,13 +54,4 @@
         });
         hideSelectBox(instanceSelectBox);
     });
-    const hideSelectBox = (selectBox) => $(selectBox).next('.select2-container').hide();
-    const showSelectBox = (selectBox) => $(selectBox).next('.select2-container').show();
-    const openSelectBox = (selectBox) => $(selectBox).select2('open');
-
-    django.SelectBoxUtils = {
-        hide: hideSelectBox,
-        show: showSelectBox,
-        open: openSelectBox
-    }
 }
