@@ -3,6 +3,8 @@ from django.contrib.admin.exceptions import NotRegistered
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.http import JsonResponse
+from django.urls import NoReverseMatch
+from django.urls import reverse
 from django.views.generic.list import BaseListView
 
 # Based on select2's AutocompleteJsonView class
@@ -20,7 +22,13 @@ class InstanceSearchJsonView(BaseListView):
         Return a JsonResponse with search results as defined in
         serialize_result(), by default:
         {
-            results: [{id: "123" text: "foo"}],
+            results: [
+                {
+                    id: "123",
+                    text: "foo",
+                    admin_url: "/admin/app/model/123/change/"
+                },
+            ],
             pagination: {more: true}
         }
         """
@@ -48,7 +56,23 @@ class InstanceSearchJsonView(BaseListView):
         Convert the provided model object to a dictionary that is added to the
         results list.
         """
-        return {"id": str(obj.pk), "text": str(obj)}
+        return {
+            "id": str(obj.pk),
+            "text": str(obj),
+            "admin_url": self.get_admin_url(obj),
+        }
+
+    def get_admin_url(self, obj, action="change"):
+        opts = obj._meta
+        admin_view_name = f"{self.admin_site.name}"
+        f":{opts.app_label}_{opts.model_name}_{action}"
+        try:
+            return reverse(
+                admin_view_name,
+                args=[obj.pk],
+            )
+        except NoReverseMatch:
+            raise Http404(f"URL for {admin_view_name} not found.")
 
     def get_paginator(self, *args, **kwargs):
         """Use the ModelAdmin's paginator."""
