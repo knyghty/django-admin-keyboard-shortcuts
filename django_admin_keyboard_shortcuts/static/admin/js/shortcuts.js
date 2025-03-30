@@ -49,7 +49,9 @@ function isFocusedTextField() {
     function showInstanceListDialog() {
         const dialog = document.getElementById("instance-list-dialog");
         dialog.showModal();
+        django.SelectBoxUtils.show("#shortcuts-model-select");
         django.SelectBoxUtils.open("#shortcuts-model-select");
+        django.SelectBoxUtils.hide("#shortcuts-instance-select");
     }
     function showShortcutsDialog() {
         showDialog("shortcuts-dialog");

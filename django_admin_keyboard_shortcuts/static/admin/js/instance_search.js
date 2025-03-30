@@ -6,11 +6,13 @@
         const hideSelectBox = (selectBox) => $(selectBox).next('.select2-container').hide();
         const showSelectBox = (selectBox) => $(selectBox).next('.select2-container').show();
         const openSelectBox = (selectBox) => $(selectBox).select2('open');
+        const clearSelectBox = (selectBox) => $(selectBox).val(null).trigger('change');
 
         django.SelectBoxUtils = {
             hide: hideSelectBox,
             show: showSelectBox,
-            open: openSelectBox
+            open: openSelectBox,
+            clear: clearSelectBox
         }
 
         const $dialog = $('#instance-list-dialog');
@@ -50,8 +52,8 @@
         });
         $dialog.on('close', function() {
             hideSelectBox(instanceSelectBox);
-            showSelectBox(modelSelectBox);
+            clearSelectBox(instanceSelectBox);
+            clearSelectBox(modelSelectBox);
         });
-        hideSelectBox(instanceSelectBox);
     });
 }
