@@ -55,7 +55,7 @@ dialog ul {
   padding: 0;
 }
 
-dialog ul li {
+dialog:not(#instance-list-dialog) ul li {
   align-items: center;
   column-gap: 1em;
   display: flex;

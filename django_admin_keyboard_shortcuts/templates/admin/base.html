@@ -4,7 +4,13 @@
 {% block extrahead %}
   {{ block.super }}
   {% block extrahead_shortcuts %}
+    <link rel="stylesheet" href="{% static "admin/css/vendor/select2/select2.css" %}">
     <link rel="stylesheet" href="{% static "admin/css/shortcuts.css" %}">
+    <script src="{% static "admin/js/vendor/jquery/jquery.js" %}" ></script>
+    <script src="{% static "admin/js/vendor/select2/select2.full.js" %}" ></script>
+    <script src="{% static "admin/js/vendor/select2/i18n/en.js" %}" ></script>
+    <script src="{% static "admin/js/jquery.init.js" %}" ></script>
+    <script src="{% static "admin/js/instance_search.js" %}"></script>
     <script src="{% static "admin/js/shortcuts.js" %}" async></script>
   {% endblock %}
 {% endblock %}
@@ -50,6 +56,31 @@
       {% endfor %}
     </div>
   </dialog>
+  <dialog class="keyboard-shortcuts" id="instance-list-dialog">
+    <div >
+      <h2>{% translate "Model Instances" %}</h2>
+      <form method="dialog">
+        <button aria-label="{% translate 'Close' %}">&#10006;</button>
+      </form>
+    </div>
+    <div>
+        {% all_apps as apps %}
+        <select id="shortcuts-model-select" class="shortcuts-select" data-placeholder="Select a model">
+          <option></option>
+          {% all_apps as apps %}
+          {% for app_label, models in apps.items %}
+            <optgroup label="{{ app_label}}" data-value="{{ app_label }}">
+                {% for model in models %}
+                    <option value="{{ model.object_name }}">{{ model.name }}</option>
+                {% endfor %}
+            </optgroup>
+          {% endfor %}
+        </select>
+        <select id="shortcuts-instance-select" class="shortcuts-select" data-placeholder="Select the model instance" data-ajax--url="{% url 'admin:instance_search' %}">
+            <option></option>
+        </select>
+    </div>
+  </dialog>
   <dialog class="keyboard-shortcuts" id="shortcuts-dialog">
     <div class="dialog-heading">
       <h2>{% translate "Keyboard shortcuts" %}</h2>
@@ -71,6 +102,10 @@
         <li>
           <div class="shortcut-description">{% translate "Go to a change list page" %}</div>
           <div class="shortcut-keys"><kbd>g</kbd> <kbd>l</kdb></div>
+        </li>
+        <li>
+          <div class="shortcut-description">{% translate "Go to the model instance change page" %}</div>
+          <div class="shortcut-keys"><kbd>g</kbd> <kbd>c</kdb></div>
         </li>
       </ul>
     </section>
