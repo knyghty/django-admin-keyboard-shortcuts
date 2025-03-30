@@ -64,8 +64,9 @@ class InstanceSearchJsonView(BaseListView):
 
     def get_admin_url(self, obj, action="change"):
         opts = obj._meta
-        admin_view_name = f"{self.admin_site.name}"
-        f":{opts.app_label}_{opts.model_name}_{action}"
+        admin_view_name = (
+            f"{self.admin_site.name}:{opts.app_label}_{opts.model_name}_{action}"
+        )
         try:
             return reverse(
                 admin_view_name,
