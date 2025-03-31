@@ -1,6 +1,6 @@
 'use strict';
 
-const inputTextFieldTypes = ['text', 'email', 'tel', 'url'];
+const inputTextFieldTypes = ['text', 'email', 'tel', 'url', 'password', 'search', 'time'];
 
 function isFocusedTextField() {
     const tag = document.activeElement.nodeName;
