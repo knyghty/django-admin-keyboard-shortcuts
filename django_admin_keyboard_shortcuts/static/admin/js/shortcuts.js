@@ -1,11 +1,17 @@
 'use strict';
 
-const inputTextFieldTypes = ['text', 'email', 'tel', 'url', 'password', 'search', 'time'];
+const inputNonTextFieldTypes = ['submit', 'reset', 'checkbox', 'radio', 'file', 'button'];
 
 function isFocusedTextField() {
     const tag = document.activeElement.nodeName;
     const type = document.activeElement.type;
-    return tag === 'TEXTAREA' || (tag === 'INPUT' && (!type || inputTextFieldTypes.includes(type)));
+    const isContentEditable = document.activeElement.isContentEditable;
+    return (
+        tag === 'TEXTAREA' ||
+        tag === 'SELECT' ||
+        (tag === 'INPUT' && !inputNonTextFieldTypes.includes(type)) ||
+        isContentEditable
+    );
 }
 
 {
