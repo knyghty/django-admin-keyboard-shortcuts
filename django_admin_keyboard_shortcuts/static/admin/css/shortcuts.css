@@ -1,3 +1,5 @@
+@import url('shortcuts_select.css');
+
 kbd {
   background-color: var(--body-bg);
   border-radius: 3px;

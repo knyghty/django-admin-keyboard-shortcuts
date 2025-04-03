@@ -16,10 +16,11 @@
         }
 
         const $dialog = $('#instance-list-dialog');
-
+        const modelSelectBoxContainer = '#shortcuts-model-select-container';
         const modelSelectBox = '#shortcuts-model-select';
+        const instanceSelectBoxContainer = '#shortcuts-instance-select-container';
         const instanceSelectBox = '#shortcuts-instance-select';
-        const $modelSelectBox = $(modelSelectBox).select2({dropdownParent: $dialog});
+        const $modelSelectBox = $(modelSelectBox).select2({dropdownParent: $(modelSelectBoxContainer)});
 
         let appLabel, modelName;
         const $instanceSelectBox = $(instanceSelectBox).select2({
@@ -35,7 +36,7 @@
                 cache: true,
                 delay: 250
             },
-            dropdownParent: $dialog
+            dropdownParent: $(instanceSelectBoxContainer),
         });
 
         $modelSelectBox.on('select2:select', function() {
