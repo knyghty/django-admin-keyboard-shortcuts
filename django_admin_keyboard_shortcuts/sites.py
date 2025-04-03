@@ -33,6 +33,3 @@ class KSAdminSite(admin.AdminSite):
 
     def instance_search_view(self, request):
         return InstanceSearchJsonView.as_view(admin_site=self)(request)
-
-
-ks_admin_site = KSAdminSite()
