@@ -23,8 +23,8 @@ Then clone this repo somewhere and install it in editable mode with pip, e.g.
     pip install -e ../django-admin-keyboard-shortcuts
 
 
-Then add `django_admin_keyboard_shortcuts` to your `INSTALLED_APPS`. It must go
-above the `django.contrib.admin` app so that the template overrides work.
+You would need to replace `django.contrib.admin` with `django_admin_keyboard_shortcuts.apps.KSAdminConfig` in your `INSTALLED_APPS` to override the default admin site. See the `Django docs on overriding the default admin site <https://docs.djangoproject.com/en/5.1/ref/contrib/admin/#overriding-the-default-admin-site>`_. Then add `django_admin_keyboard_shortcuts.apps.AdminKeyboardShortcutsConfig`. It must go
+above the `django_admin_keyboard_shortcuts.apps.KSAdminConfig` app so that the template overrides work.
 
 Now you can hack away.
 
