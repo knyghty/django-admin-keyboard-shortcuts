@@ -28,6 +28,72 @@ above the `django.contrib.admin` app so that the template overrides work.
 
 Now you can hack away.
 
+Supported Shortcuts
+-----------------------
+.. list-table::
+   :header-rows: 1
+
+   * - Description
+     - Shortcut
+     - Scope
+     - Status
+   * - Show help dialog
+     - \?
+     - Global
+     - Done
+   * - Go to the site index
+     - g i
+     - Global
+     - Done
+   * - Go to a change list page
+     - g l
+     - Global
+     - Done
+   * - Go to the model instance page
+     - g c
+     - Global
+     - `PR#49 <https://github.com/knyghty/django-admin-keyboard-shortcuts/pull/49>`_
+   * - Select previous row for action
+     - k
+     - Change List
+     - Done
+   * - Select next row for action
+     - j
+     - Change List
+     - Done
+   * - Toggle row selection
+     - x
+     - Change List
+     - Done
+   * - Focus actions dropdown
+     - a
+     - Change List
+     - Done
+   * - Save and go to change list
+     - Alt+s
+     - Change Form
+     - Done
+   * - Save and add another
+     - Alt+a
+     - Change Form
+     - Done
+   * - Save and continue editing
+     - Alt+c
+     - Change Form
+     - Done
+   * - Delete
+     - Alt+d
+     - Change Form
+     - Done
+   * - Confirm deletion
+     - Alt+y
+     - Delete Confirmation
+     - Done
+   * - Cancel deletion
+     - Alt+n
+     - Delete Confirmation
+     - Done
+
 Linting
 -------
 
