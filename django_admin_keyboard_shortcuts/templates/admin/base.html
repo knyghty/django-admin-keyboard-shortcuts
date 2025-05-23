@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load static i18n shortcuts %}
+{% load static i18n %}
 
 {% block extrahead %}
   {{ block.super }}
@@ -33,14 +33,13 @@
       >
     </form>
     <div>
-      {% all_apps as apps %}
-      {% for app_label, models in apps.items %}
+      {% for app in available_apps %}
         <section>
-          <h3>{{ app_label }}</h3>
+          <h3>{{ app.app_label }}</h3>
           <ul>
-          {% for model in models %}
+          {% for model in app.models %}
             <li>
-              <a href="{{ model.url }}"{{ model.name }}>
+              <a href="{{ model.admin_url }}">
                 {{ model.name }}
               </a>
             </li>
