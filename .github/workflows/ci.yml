@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install dependencies
         run: |
           python -m pip install -U pip wheel
@@ -59,7 +59,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Install dependencies
         run: python -m pip install -U pip wheel build
       - name: Build package
