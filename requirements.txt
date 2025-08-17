@@ -2,4 +2,5 @@
 coverage[toml]
 django
 pre-commit
+selenium
 wheel
